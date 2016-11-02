@@ -1,6 +1,6 @@
 package io.kwangsik.application.authorizationserver.commonness;
 
-import io.kwangsik.infrastructure.authorizationserver.SimpleRequestVerificationRepository;
+import io.kwangsik.domain.authorizationserver.role.RequestVerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service // Spring Service Class 인 경우 작성한다.
 public class RequestVerificationService {
 
-    private final SimpleRequestVerificationRepository repository;
+    private final RequestVerificationRepository repository;
 
     @Autowired
-    private RequestVerificationService(final SimpleRequestVerificationRepository repository) {
+    private RequestVerificationService(final RequestVerificationRepository repository) {
 
         this.repository = repository;
     }

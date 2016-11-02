@@ -52,7 +52,7 @@ public class BasicsUtility {
 
             try {
 
-                new SimpleDateFormat("yyyyMMdd").parse(cause);
+                result = new SimpleDateFormat("yyyyMMdd").parse(cause);
             } catch (ParseException e) {
 
                 e.printStackTrace();

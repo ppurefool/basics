@@ -1,6 +1,6 @@
 package io.kwangsik.application.authorizationserver.commonness;
 
-import io.kwangsik.infrastructure.authorizationserver.SimpleModelMapInquiryRepository;
+import io.kwangsik.domain.authorizationserver.variable.ModelMapInquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.Map;
 @Service // Spring Service Class 인 경우 작성한다.
 public class ModelMapInquiryService {
 
-    private final SimpleModelMapInquiryRepository repository;
+    private final ModelMapInquiryRepository repository;
 
     @Autowired // 해당 Class 의 Spring Bean 객체가 필요한 경우 작성한다.
-    private ModelMapInquiryService(final SimpleModelMapInquiryRepository repository) {
+    private ModelMapInquiryService(final ModelMapInquiryRepository repository) {
 
         this.repository = repository;
     }

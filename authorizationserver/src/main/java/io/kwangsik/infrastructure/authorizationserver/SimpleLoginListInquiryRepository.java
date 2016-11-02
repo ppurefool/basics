@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
 /**
@@ -61,7 +62,7 @@ order by
 
         return this.entityManager.createQuery(queryString, LoginDetail.class)
                 .setParameter("email", cause.getEmail())
-                .setParameter("startDate", cause.getStartDate())
-                .setParameter("endDate", cause.getEndDate());
+                .setParameter("startDate", cause.getStartDate(), TemporalType.TIMESTAMP)
+                .setParameter("endDate", cause.getEndDate(), TemporalType.TIMESTAMP);
     }
 }

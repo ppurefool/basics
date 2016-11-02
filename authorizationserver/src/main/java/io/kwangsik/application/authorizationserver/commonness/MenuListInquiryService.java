@@ -1,7 +1,7 @@
 package io.kwangsik.application.authorizationserver.commonness;
 
 import io.kwangsik.domain.authorizationserver.menu.Menu;
-import io.kwangsik.infrastructure.authorizationserver.SimpleMenuListInquiryRepository;
+import io.kwangsik.domain.authorizationserver.menu.MenuListInquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ import java.util.List;
 @Service // Spring Service Class 인 경우 작성한다.
 public class MenuListInquiryService {
 
-    private final SimpleMenuListInquiryRepository repository;
+    private final MenuListInquiryRepository repository;
 
     @Autowired
-    private MenuListInquiryService(final SimpleMenuListInquiryRepository repository) {
+    private MenuListInquiryService(final MenuListInquiryRepository repository) {
 
         this.repository = repository;
     }

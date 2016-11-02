@@ -1,6 +1,6 @@
 package io.kwangsik.application.authorizationserver.commonness;
 
-import io.kwangsik.infrastructure.authorizationserver.SimpleAnonymAddressListInquiryRepository;
+import io.kwangsik.domain.authorizationserver.menu.AnonymAddressListInquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service // Spring Service Class 인 경우 작성한다.
 public class AnonymAddressListInquiryService {
 
-    private final SimpleAnonymAddressListInquiryRepository repository;
+    private final AnonymAddressListInquiryRepository repository;
 
     @Autowired
-    private AnonymAddressListInquiryService(final SimpleAnonymAddressListInquiryRepository repository) {
+    private AnonymAddressListInquiryService(final AnonymAddressListInquiryRepository repository) {
 
         this.repository = repository;
     }
