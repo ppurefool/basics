@@ -182,95 +182,149 @@
      */
     initializeGrid: function(target, gridIdentifier, configuration) {
 
-        if (null != window["ax5"] && null != ax5["ui"]["grid"] && null != window["$"]) {
+        if (null == window["ax5"] || null == ax5["ui"]["grid"] || null == window["$"]) return;
 
-            target[gridIdentifier] = new ax5.ui["grid"]();
+        target[gridIdentifier] = new ax5.ui["grid"]();
 
-            target[gridIdentifier].setConfig($.extend(true, {
-                target: $('[data-ax5grid="' + gridIdentifier + '"]'), // DIV jQuery 객체
-                header: { // Header 설정
-                    align: "center"
-                },
-                body: {
-                    onDataChanged: function() {
+        target[gridIdentifier].setConfig($.extend(true, {
+            target: $('[data-ax5grid="' + gridIdentifier + '"]'), // DIV jQuery 객체
+            header: { // Header 설정
+                align: "center"
+            },
+            body: {
+                onDataChanged: function() {
 
-                        if (!this.self.config["showRowSelector"]) return;
-                        if ("__selected__" == this.key) return;
-                        if (this.item["__selected__"]) return;
+                    if (!this.self.config["showRowSelector"]) return;
+                    if ("__selected__" == this.key) return;
+                    if (this.item["__selected__"]) return;
 
-                        this.self.select(this.dindex);
-                    }
-                },
-                page: { // 페이지 설정
-                    // navigationItemCount: 5,
-                    // height: 30,
-                    // display: true,
-                    firstIcon: '<i class="fa fa-step-backward" aria-hidden="true"></i>',
-                    prevIcon: '<i class="fa fa-caret-left" aria-hidden="true"></i>',
-                    nextIcon: '<i class="fa fa-caret-right" aria-hidden="true"></i>',
-                    lastIcon: '<i class="fa fa-step-forward" aria-hidden="true"></i>'
-                },
-                multiSort: true,
-                showLineNumber: true,
-                showRowSelector: true,
-                sortable: true
-            }, configuration));
-        }
+                    this.self.select(this.dindex);
+                }
+            },
+            page: { // 페이지 설정
+                // navigationItemCount: 5,
+                // height: 30,
+                // display: true,
+                firstIcon: '<i class="fa fa-step-backward" aria-hidden="true"></i>',
+                prevIcon: '<i class="fa fa-caret-left" aria-hidden="true"></i>',
+                nextIcon: '<i class="fa fa-caret-right" aria-hidden="true"></i>',
+                lastIcon: '<i class="fa fa-step-forward" aria-hidden="true"></i>'
+            },
+            multiSort: true,
+            showLineNumber: true,
+            showRowSelector: true,
+            sortable: true
+        }, configuration));
     },
 
     /**
      * Grid Data 정리하기
+     * 참고) ax5core, ax5ui-grid 등의 javascript file 을 include 해야한다.
      *
-     * 예제) ScreenUtility.clearGridData(GridSetting, "firstGrid");
+     * 예제) ScreenUtility.clearGridData(GridSetting["firstGrid"]);
      *
-     * @param target JSON
-     * @param gridIdentifier String
+     * @param grid Object
      */
-    clearGridData: function(target, gridIdentifier) {
+    clearGridData: function(grid) {
 
-        if (null != window["ax5"] && null != ax5["ui"]["grid"] && null != window["$"]) {
+        if (null == window["ax5"] || null == ax5["ui"]["grid"]) return;
 
-            if (null != target[gridIdentifier]) {
-
-                target[gridIdentifier].setData({list: [], page: null});
-            }
-        }
+        grid.setData({list: [], page: null});
     },
 
     /**
      * Grid Data 설정하기
+     * 참고) ax5core, ax5ui-grid 등의 javascript file 을 include 해야한다.
      *
-     * 예제) ScreenUtility.setGridData(GridSetting, "firstGrid", result);
+     * 예제) ScreenUtility.setGridData(GridSetting["firstGrid"], result);
      *
-     * @param target JSON
-     * @param gridIdentifier String
+     * @param grid Object
      * @param result JSON
      */
-    setGridData: function(target, gridIdentifier, result) {
+    setGridData: function(grid, result) {
 
-        if (null != window["ax5"] && null != ax5["ui"]["grid"] && null != window["$"]) {
+        if (null == window["ax5"] || null == ax5["ui"]["grid"]) return;
+        if (null == result["outputList"]) return;
 
-            if (null != target[gridIdentifier] && null != result["outputList"]) {
-
-                target[gridIdentifier].setData({
-                    list: result["outputList"],
-                    page: {
-                        currentPage: result["page"],
-                        pageSize: result["size"],
-                        totalElements: result["totalElements"],
-                        totalPages: result["totalPage"]
-                    }
-                });
+        grid.setData({
+            list: result["outputList"],
+            page: {
+                currentPage: result["page"],
+                pageSize: result["size"],
+                totalElements: result["totalElements"],
+                totalPages: result["totalPage"]
             }
-        }
+        });
     },
 
+    /**
+     * Grid Data Select
+     * 참고) ax5core, ax5ui-grid, jQuery 등의 javascript file 을 include 해야한다.
+     *      ScreenUtility.selectingGridData 을 미리 설정한다.
+     *
+     * 예제) ScreenUtility.selectingGridData = ["key1", "key2"];
+     *      ScreenUtility.selectGridData(GridSetting["firstGrid"], "key");
+     *
+     * @param grid Object
+     * @param property String
+     */
+    selectingGridData: null,
+    selectGridData: function(grid, property) {
+
+        if (null == window["ax5"] || null == ax5["ui"]["grid"] || null == window["$"]) return;
+        if (null == ScreenUtility.selectingGridData) return;
+
+        var identifiers = $.map(grid.getList(), function(detail) {return detail[property];});
+        var selectingIdentifiersLength = ScreenUtility.selectingGridData.length;
+
+        for (var index = 0; index < selectingIdentifiersLength; index++) {
+
+            grid.select($.inArray(ScreenUtility.selectingGridData[index], identifiers));
+        }
+
+        identifiers = null;
+    },
+
+    /**
+     * Warning Push
+     *
+     * 예제) ScreenUtility.pushWarning("선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.");
+     *
+     * @param message String
+     */
+    pushWarning: function(message) {
+
+        ScreenSetting.notification.push({icon: '<i class="fa fa-warning" style="color: greenyellow"></i>', msg: message});
+    },
+
+    /**
+     * Information Push
+     *
+     * 예제) ScreenUtility.pushInformation("저장이 완료되었습니다.");
+     *
+     * @param message String
+     */
+    pushInformation: function(message) {
+
+        ScreenSetting.notification.push({icon: '<i class="fa fa-info-circle" style="color: steelblue"></i>', msg: message});
+    },
+
+    /**
+     * 응답 오류 처리하기
+     * @param jqXHR JSON
+     */
     processResponseError: function(jqXHR) {
 
         alert("요청이 성공하였으나 예상하지 못한 결과입니다. 관리자에게 문의해주세요.\n\n" + JSON.stringify(jqXHR));
     },
 
+    /**
+     * 요청 오류 처리하기
+     * @param jqXHR JSON
+     */
     processRequestError: function(jqXHR) {
+
+        ScreenUtility.selectingGridData = null;
 
         if (403 == jqXHR.status) {
 
@@ -279,15 +333,5 @@
 
             alert("요청시 오류가 발생하였습니다. 관리자에게 문의해주세요.\n\n" + JSON.stringify(jqXHR));
         }
-    },
-
-    pushWarning: function(message) {
-
-        ScreenSetting.notification.push({icon: '<i class="fa fa-warning" style="color: greenyellow"></i>', msg: message});
-    },
-
-    pushInformation: function(message) {
-
-        ScreenSetting.notification.push({icon: '<i class="fa fa-info-circle" style="color: steelblue"></i>', msg: message});
     }};
 })();

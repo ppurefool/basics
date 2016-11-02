@@ -16,7 +16,7 @@ var DataRequest = {
 
     inquiry: function(page) {
 
-        ScreenUtility.clearGridData(GridSetting, "firstGrid");
+        ScreenUtility.clearGridData(GridSetting["firstGrid"]);
 
         $.ajax({
             data: {
@@ -31,8 +31,6 @@ var DataRequest = {
     },
 
     save: function() {
-
-        DataResponse.savingIdentifiers = null;
 
         $.ajax({
             data: JSON.stringify(DataRequest.getList()),
@@ -66,20 +64,8 @@ var DataResponse = {
 
         if (200 == status) { // 200. success
 
-            ScreenUtility.setGridData(GridSetting, "firstGrid", result);
-
-            if (null != DataResponse.savingIdentifiers) {
-
-                var identifiers = $.map(GridSetting["firstGrid"].getList(), function(detail) {return detail.key;});
-                var savingIdentifiersLength = DataResponse.savingIdentifiers.length;
-
-                for (var index = 0; index < savingIdentifiersLength; index++) {
-
-                    GridSetting["firstGrid"].select($.inArray(DataResponse.savingIdentifiers[index], identifiers));
-                }
-
-                DataResponse.savingIdentifiers = null;
-            }
+            ScreenUtility.setGridData(GridSetting["firstGrid"], result);
+            ScreenUtility.selectGridData(GridSetting["firstGrid"], "key");
         } else if (204 == status) { // 204. nocontent
 
             ScreenUtility.pushInformation("조회 결과가 존재하지 않습니다.");
@@ -87,19 +73,20 @@ var DataResponse = {
 
             ScreenUtility.processResponseError(jqXHR);
         }
+
+        ScreenUtility.selectingGridData = null;
     },
 
-    savingIdentifiers: null,
     processSavingSuccess: function(result, statusText, jqXHR) {
 
         var status = jqXHR.status; // HTTP Status Code
 
         if (200 == status) { // 200. success
 
-            DataResponse.savingIdentifiers = result;
-            DataRequest.inquiry(GridSetting["firstGrid"].page.currentPage);
-
             ScreenUtility.pushInformation("저장이 완료되었습니다.");
+            ScreenUtility.selectingGridData = result;
+
+            DataRequest.inquiry(GridSetting["firstGrid"].page.currentPage);
         } else if (204 == status) { // 204. nocontent
 
             ScreenUtility.pushInformation("저장할 데이터가 존재하지 않습니다.");
@@ -115,9 +102,9 @@ var DataResponse = {
 
         if (200 == status) { // 200. success
 
-            DataRequest.inquiry();
-
             ScreenUtility.pushInformation("삭제가 완료되었습니다.");
+
+            DataRequest.inquiry();
         } else if (204 == status) { // 204. nocontent
 
             ScreenUtility.pushInformation("삭제할 데이터가 존재하지 않습니다.");

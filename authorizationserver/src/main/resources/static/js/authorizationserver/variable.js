@@ -24,8 +24,7 @@ var ScreenEvent = {
 
     clickAdditionButton: function() {
 
-        GridSetting["firstGrid"].addRow({__selected__: true, key: null, value: null, detail: null});
-        ScreenUtility.pushInformation(JSON.stringify(GridSetting["firstGrid"].getList("modified")));
+        GridSetting["firstGrid"].addRow({__selected__: true});
     },
 
     clickSavingButton: function() {
@@ -127,8 +126,8 @@ var ScreenSetting = {
 
         // 이벤트 핸들러 설정
         $('#inquiryButton').click(ScreenEvent.clickInquiryButton); // 조회 버튼
-        $('#addButton').click(ScreenEvent.clickAdditionButton); // 추가 버튼
-        $('#saveButton').click(ScreenEvent.clickSavingButton); // 저장 버튼
-        $('#deleteButton').click(ScreenEvent.clickDeletingButton); // 삭제 버튼
+        $('#additionButton').click(ScreenEvent.clickAdditionButton); // 추가 버튼
+        $('#savingButton').click(ScreenEvent.clickSavingButton); // 저장 버튼
+        $('#deletingButton').click(ScreenEvent.clickDeletingButton); // 삭제 버튼
     }
 };

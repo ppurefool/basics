@@ -8,7 +8,7 @@ var DataRequest = {
 
     inquiry: function(page) {
 
-        ScreenUtility.clearGridData(GridSetting, "firstGrid");
+        ScreenUtility.clearGridData(GridSetting["firstGrid"]);
 
         $.ajax({
             data: {
@@ -33,7 +33,7 @@ var DataResponse = {
 
         if (200 == status) { // 200. success
 
-            ScreenUtility.setGridData(GridSetting, "firstGrid", result);
+            ScreenUtility.setGridData(GridSetting["firstGrid"], result);
         } else if (204 == status) { // 204. nocontent
 
             ScreenUtility.pushInformation("조회 결과가 존재하지 않습니다.");
