@@ -1,0 +1,68 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <th:block th:include="thymeleaf/authorizationserver/fragment :: head" />
+
+    <script th:src="@{../../js/authorizationserver/index.js}"></script><!-- Index -->
+    <script th:src="@{../../js/authorizationserver/index-ajax.js}"></script><!-- Index AJAX -->
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <th:block th:include="thymeleaf/authorizationserver/fragment :: navigation" />
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+
+        <th:block th:include="thymeleaf/authorizationserver/fragment :: screen-name" />
+
+        <!-- ==================== screen contents ===== start -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon">사용자 E-mail</span>
+                                    <input class="form-control" placeholder="E-mail" type="email" id="email" th:value="${#authentication.getName()}" th:disabled="${not #authentication.getPrincipal().hasAdministratorRole()}" />
+                                </div>
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+
+                            <div class="col-lg-6" style="text-align: right;">
+                                <button class="btn btn-default" type="button" id="inquiryButton">조회</button>
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                        </div>
+                        <!-- /.row (nested) -->
+
+                        <div data-ax5grid="firstGrid" style="height: 515px;"></div>
+
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+
+        <!-- ____________________ screen contents _____ e n d -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+</body>
+
+</html>
