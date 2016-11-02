@@ -5,11 +5,11 @@ import lombok.ToString;
 import java.util.Date;
 
 /**
- * 로그인 목록 조회 응답
+ * 로그인 상세
  * 참고) VariableListInquiryRepository Interface 에서 이용한다.
  */
 @ToString
-public class LoginListInquiryResponse {
+public class LoginDetail {
 
     private int number; // 번호
     private String typeName; // 유형 이름
@@ -19,8 +19,8 @@ public class LoginListInquiryResponse {
     private String registrationUserEmail; // 등록 사용자 Email
 
     // 참고) SimpleLoginListInquiryRepository Class 에서 이용한다.
-    public LoginListInquiryResponse(final int number, final String type, final int error, final String address,
-                                    final Date registrationDate, final String registrationUserEmail) {
+    public LoginDetail(final int number, final String type, final int error, final String address,
+                       final Date registrationDate, final String registrationUserEmail) {
 
         final String typeName;
         final String errorName;

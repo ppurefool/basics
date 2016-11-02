@@ -11,11 +11,10 @@ var DataRequest = {
         ScreenUtility.clearGridData(GridSetting["firstGrid"]);
 
         $.ajax({
-            data: {
-                email: $('#email').val(),
+            data: ScreenUtility.serializeJSON($("#condition"), {
                 page: page
                 // size: 15
-            },
+            }),
             url: "/membership/login", // 회원 로그인 목록
             type: "get", // 조회
             success: DataResponse.inquirySuccess,

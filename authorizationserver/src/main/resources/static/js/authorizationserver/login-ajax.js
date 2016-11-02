@@ -11,8 +11,7 @@ var DataRequest = {
         $.ajax({
             "data": {
                 "user-email": $("input:eq(0)").val(),
-                "password-hash": keccak_512($("input:eq(1)").val()),
-                "_csrf": $("input:eq(2)").val()
+                "password-hash": keccak_512($("input:eq(1)").val())
             },
             "dataType": "json",
             "url": "/log-in", // 로그인

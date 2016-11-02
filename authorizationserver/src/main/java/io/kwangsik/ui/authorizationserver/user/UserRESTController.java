@@ -30,20 +30,9 @@ public class UserRESTController {
 
     /**
      * 목록 조회
+     * @param cause UserListInquiryCondition
      * @param pageRequest PageRequest
-     *        page int
-     *        size int
      * @return PageResponse
-     *         input UserListInquiryCondition
-     *         outputList List<UserDetail>
-     *         pageRequest PageRequest
-     *         first boolean
-     *         last boolean
-     *         numberOfElements int
-     *         totalElements int
-     *         totalPage int
-     *         page int
-     *         size int
      */
     @RequestMapping(value = "/membership/users", method = RequestMethod.GET)
     public PageResponse<UserListInquiryCondition, UserDetail> inquiryList(
@@ -57,7 +46,7 @@ public class UserRESTController {
 
     /**
      * 목록 저장
-     * @param cause List<UserDetailSavingRequest>
+     * @param cause List<UserDetail>
      * @return List<String>
      */
     @RequestMapping(value = "/membership/users", method = {RequestMethod.POST, RequestMethod.PUT})

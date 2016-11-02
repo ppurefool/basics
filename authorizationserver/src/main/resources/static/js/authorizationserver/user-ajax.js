@@ -20,12 +20,10 @@ var DataRequest = {
         ScreenUtility.clearGridData(GridSetting["firstGrid"]);
 
         $.ajax({
-            data: {
-                email: $('#email').val(),
-                name: $('#name').val(),
+            data: ScreenUtility.serializeJSON($("#condition"), {
                 page: page
                 // size: 15
-            },
+            }),
             url: "/membership/users", // 회원 사용자 목록
             type: "get", // 조회
             success: DataResponse.processInquirySuccess,

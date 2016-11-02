@@ -134,7 +134,9 @@
 
                 ax5.ui.grid.formatter["date"] = function() {
 
-                    return (new Date(this.value)).toDateString();
+                    var date = new Date(this.value);
+
+                    return date.toISOString().substring(0, 10) + " " + date.toTimeString().substring(0, 8);
                 };
             }
         }
@@ -285,16 +287,63 @@
         identifiers = null;
     },
 
-    addGridRow: function(grid, row) {
+    /**
+     * Grid 행 추가하기
+     * 참고) ax5core, ax5ui-grid, jQuery 등의 javascript file 을 include 해야한다.
+     *
+     * 예제) ScreenUtility.addGridRow(GridSetting["firstGrid"]);
+     *
+     * @param grid Object
+     * @param data JSON
+     */
+    addGridRow: function(grid, data) {
 
         if (null == window["ax5"] || null == ax5["ui"]["grid"] || null == window["$"]) return;
 
-        if (null == row) {
+        if (null == data) {
 
             grid.addRow({});
         } else {
 
-            grid.addRow($.extend(true, {}, row));
+            grid.addRow($.extend(true, {}, data));
+        }
+    },
+
+    /**
+     * JSON Serialize
+     * @param parent jQuery
+     * @param data JSON
+     * @param delimiter String
+     */
+    serializeJSON: function(parent, data, delimiter) {
+
+        var result = null;
+
+        if (null == window["$"]) {
+
+            return data;
+        } else {
+
+            result = {};
+
+            if (null == delimiter) delimiter = ",";
+
+            $.each(parent.find('[name]').serializeArray(), function(index, detail) {
+
+                var name = detail.name;
+                var value = detail.value;
+                var values;
+
+                if (result.hasOwnProperty(name)) {
+
+                    result[name] = result[name].toString() + delimiter + value.toString();
+                } else {
+
+                    result[name] = value;
+                }
+            });
+
+            return (null != data? $.extend(true, result, data): result);
         }
     },
 

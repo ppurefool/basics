@@ -8,5 +8,5 @@ import io.kwangsik.commonness.authorizationserver.dto.PageResponse;
  */
 public interface LoginListInquiryRepository {
 
-    PageResponse<LoginListInquiryRequest, LoginListInquiryResponse> process(LoginListInquiryRequest cause, PageRequest pageRequest);
+    PageResponse<LoginListInquiryCondition, LoginDetail> process(LoginListInquiryCondition cause, PageRequest pageRequest);
 }

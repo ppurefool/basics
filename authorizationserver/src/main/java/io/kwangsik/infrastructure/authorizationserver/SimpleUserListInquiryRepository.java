@@ -52,11 +52,8 @@ order by
 
     private TypedQuery<UserDetail> getTypedQuery(final UserListInquiryCondition cause) {
 
-        final String email = cause.getEmail();
-        final String name = cause.getName();
-
         return this.entityManager.createQuery(queryString, UserDetail.class)
-                .setParameter("email", (!StringUtils.isEmpty(email)? email: null))
-                .setParameter("name", (!StringUtils.isEmpty(name)? "%" + name + "%": null));
+                .setParameter("email", cause.getEmail())
+                .setParameter("name", cause.getName());
     }
 }

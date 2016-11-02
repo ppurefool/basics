@@ -48,18 +48,19 @@
                 </div>
                 <div class="panel-body">
                     <form role="form">
-                        <fieldset>
+                        <fieldset id="data">
                             <div class="form-group">
                                 <!--<input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>-->
-                                <input class="form-control" placeholder="E-mail" type="email" autofocus="autofocus" value="sys-admin@kwangsik.io" />
+                                <input class="form-control" placeholder="E-mail" type="email" autofocus="autofocus" name="user-email" value="sys-admin@kwangsik.io" />
                             </div>
                             <div class="form-group">
                                 <!--<input class="form-control" placeholder="Password" name="password" type="password">-->
-                                <input class="form-control" placeholder="Password" type="password" value="password" />
+                                <input class="form-control" placeholder="Password" type="password" name="password-hash" value="password" />
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input name="remember" type="checkbox" value="Remember Me" />Remember Me
+                                    <!--<input name="remember" type="checkbox" value="Remember Me" />Remember Me-->
+                                    <input type="checkbox" value="Remember Me" />Remember Me
                                 </label>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->

@@ -30,19 +30,7 @@ public class VariableRESTController {
     /**
      * 목록 조회
      * @param pageRequest PageRequest
-     *        page int
-     *        size int
      * @return PageResponse
-     *         input ?
-     *         outputList List<VariableDetail>
-     *         pageRequest PageRequest
-     *         first boolean
-     *         last boolean
-     *         numberOfElements int
-     *         totalElements int
-     *         totalPage int
-     *         page int
-     *         size int
      */
     @RequestMapping(value = "/system/variables", method = RequestMethod.GET)
     public PageResponse<?, VariableDetail> inquiryList(final PageRequest pageRequest) {
