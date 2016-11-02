@@ -102,7 +102,7 @@ var GridSetting = {
 
         ScreenUtility.initializeGrid(GridSetting, dataAX5GridIdentifier, {
             columns: [ // 컬럼 목록 설정 // key. Data 바인딩시 Mapping 할 field 이름
-                {key: "key", label: "변수 이름", width: 170, editor: {type: "text"}},
+                {key: "key", label: "변수 이름", width: 174 , editor: {type: "text"}},
                 {key: "value", label: "변수 값", width: 210, editor: {type: "text"}},
                 {key: "detail", label: "변수 내용", width: 400, editor: {type: "text"}}
             ],
