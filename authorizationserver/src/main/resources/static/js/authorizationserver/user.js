@@ -24,7 +24,7 @@ var ScreenEvent = {
 
     clickAdditionButton: function() {
 
-        GridSetting["firstGrid"].addRow({__selected__: true, "email": null, "name": null});
+        GridSetting["firstGrid"].addRow({__selected__: true});
     },
 
     clickSavingButton: function() {
