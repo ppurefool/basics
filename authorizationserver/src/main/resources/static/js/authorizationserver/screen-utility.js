@@ -285,6 +285,19 @@
         identifiers = null;
     },
 
+    addGridRow: function(grid, row) {
+
+        if (null == window["ax5"] || null == ax5["ui"]["grid"] || null == window["$"]) return;
+
+        if (null == row) {
+
+            grid.addRow({});
+        } else {
+
+            grid.addRow($.extend(true, {}, row));
+        }
+    },
+
     /**
      * Warning Push
      *

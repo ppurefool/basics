@@ -24,7 +24,7 @@ var ScreenEvent = {
 
     clickAdditionButton: function() {
 
-        GridSetting["firstGrid"].addRow({__selected__: true});
+        ScreenUtility.addGridRow(GridSetting["firstGrid"]);
     },
 
     clickSavingButton: function() {
