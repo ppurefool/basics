@@ -29,23 +29,30 @@
                     <div class="panel-body">
 
                         <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group input-group">
+                            <div class="col-lg-5">
+                                <div class="input-group">
                                     <span class="input-group-addon">사용자 E-mail</span>
                                     <input class="form-control" placeholder="E-mail" type="email" id="email" th:value="${#authentication.getName()}" th:disabled="${not #authentication.getPrincipal().hasAdministratorRole()}" />
                                 </div>
                             </div>
-                            <!-- /.col-lg-6 (nested) -->
 
-                            <div class="col-lg-6" style="text-align: right;">
+                            <div class="col-lg-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">등록기간</span>
+                                    <input class="form-control" placeholder="yyyy-mm-dd" type="text" />
+                                    <span class="input-group-addon">~</span>
+                                    <input class="form-control" placeholder="yyyy-mm-dd" type="text" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2" style="text-align: right;">
                                 <button class="btn btn-default" type="button" id="inquiryButton">조회</button>
                             </div>
-                            <!-- /.col-lg-6 (nested) -->
                         </div>
                         <!-- /.row (nested) -->
 
-                        <div data-ax5grid="firstGrid" style="height: 515px;"></div>
-
+                        <br />
+                        <div data-ax5grid="firstGrid" style="height: 434px;"></div>
                     </div>
                     <!-- /.panel-body -->
                 </div>

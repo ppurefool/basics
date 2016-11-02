@@ -20,8 +20,8 @@ var DataRequest = {
 
         $.ajax({
             data: {
-                page: page,
-                size: 20
+                page: page
+                // size: 20
             },
             url: "/system/variables", // 시스템 변수 목록
             type: "get", // 조회

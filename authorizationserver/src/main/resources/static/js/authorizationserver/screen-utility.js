@@ -134,7 +134,7 @@
 
                 ax5.ui.grid.formatter["date"] = function() {
 
-                    return (new Date(this.value)).toLocaleString();
+                    return (new Date(this.value)).toDateString();
                 };
             }
         }

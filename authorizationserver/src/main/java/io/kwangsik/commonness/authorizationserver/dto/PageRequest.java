@@ -22,6 +22,6 @@ public class PageRequest {
 
     public int getValidSize() {
 
-        return (null != size && 0 < size? size: 200);
+        return (null != size && 0 < size? size: 15);
     }
 }

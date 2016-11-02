@@ -13,8 +13,8 @@ var DataRequest = {
         $.ajax({
             data: {
                 email: $('#email').val(),
-                page: page,
-                size: 20
+                page: page
+                // size: 15
             },
             url: "/membership/login", // 회원 로그인 목록
             type: "get", // 조회

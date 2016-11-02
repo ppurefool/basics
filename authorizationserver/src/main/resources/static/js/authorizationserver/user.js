@@ -99,7 +99,7 @@ var GridSetting = {
         ScreenUtility.initializeGrid(GridSetting, dataAX5GridIdentifier, {
             columns: [
                 {key: "email", label: "사용자 E-mail", width: 500, editor: {type: "text"}},
-                {key: "name", label: "사용자 이름", width: 280, editor: {type: "text"}}
+                {key: "name", label: "사용자 이름", width: 284, editor: {type: "text"}}
             ],
             page: {
                 onChange: function() {

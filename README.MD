@@ -5,7 +5,7 @@
 
 * Authorization Server Application 을 실행한다.
 
-* Browser 에서 다음 주소를 입력한다.
+* Browser 에서 다음 주소를 입력한
 
 >
     http://localhost:8081

@@ -13,7 +13,7 @@ insert into Menu (menuNumber, displayName, interiorName, iconKey, addressValue, 
 insert into Menu (menuNumber, displayName, interiorName, iconKey, addressValue, displayYesorno, anonymYesorno, detailValue) values (31, '사용자 권한', '권한 사용자', 'user', '/authority/users-view', true, false, 'authorizationserver');
 insert into Menu (menuNumber, displayName, interiorName, iconKey, addressValue, displayYesorno, anonymYesorno, detailValue) values (32, '메뉴 권한', '권한 메뉴', 'list-alt', '/authority/menus-view', true, false, 'authorizationserver');
 insert into Menu (menuNumber, displayName, interiorName, iconKey, addressValue, displayYesorno, anonymYesorno, detailValue) values (41, '시스템 변수', '시스템 변수', 'wrench', '/system/variables-view', true, false, 'authorizationserver');
-insert into Menu (menuNumber, displayName, interiorName, iconKey, addressValue, displayYesorno, anonymYesorno, detailValue) values (42, 'DB 관리', 'H2_CONSOLE', 'database', '/h2-console', true, false, 'authorizationserver');
+-- insert into Menu (menuNumber, displayName, interiorName, iconKey, addressValue, displayYesorno, anonymYesorno, detailValue) values (42, 'DB 관리', 'H2_CONSOLE', 'database', '/h2-console', true, false, 'authorizationserver');
 
 insert into MenuRole (menuNumber, roleKey) values (11, 'SYSTEM_ADMINISTRATOR');
 insert into MenuRole (menuNumber, roleKey) values (11, 'BUSINESS_ADMINISTRATOR');

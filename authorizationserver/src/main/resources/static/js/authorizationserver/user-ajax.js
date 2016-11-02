@@ -23,8 +23,8 @@ var DataRequest = {
             data: {
                 email: $('#email').val(),
                 name: $('#name').val(),
-                page: page,
-                size: 20
+                page: page
+                // size: 15
             },
             url: "/membership/users", // 회원 사용자 목록
             type: "get", // 조회
