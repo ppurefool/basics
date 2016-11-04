@@ -7,8 +7,7 @@
 // Ready Event
 $(document).ready(function() {
 
-    ScreenUtility.initialize(ScreenSetting);
-
+    Utility.initialize();
     ScreenSetting.processReadyEvent();
 
     $('#inquiryButton').click();
@@ -28,9 +27,9 @@ var GridSetting = {
 
     initialize: function() {
 
-        var dataAX5GridIdentifier = "firstGrid";
+        var gridIdentifier = "firstGrid";
 
-        ScreenUtility.initializeGrid(GridSetting, dataAX5GridIdentifier, {
+        Utility.grid.initialize(gridIdentifier, {
             columns: [ // 컬럼 목록 설정 // key. Data 바인딩시 Mapping 할 field 이름
                 {key: "number", label: "번호", width: 0},
                 {key: "typeName", label: "로그인 유형", width: 120},

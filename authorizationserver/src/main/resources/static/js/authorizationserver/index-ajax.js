@@ -8,17 +8,17 @@ var DataRequest = {
 
     inquiry: function(page) {
 
-        ScreenUtility.clearGridData(GridSetting["firstGrid"]);
+        Utility.grid.clear("firstGrid");
 
         $.ajax({
-            data: ScreenUtility.serializeJSON($("#condition"), {
+            data: Utility.json.serialize($("#condition"), {
                 page: page
                 // size: 15
             }),
             url: "/membership/login", // 회원 로그인 목록
             type: "get", // 조회
             success: DataResponse.inquirySuccess,
-            error: DataResponse.processRequestError
+            error: Utility.ajax.processRequestError
         });
     }
 };
@@ -32,13 +32,13 @@ var DataResponse = {
 
         if (200 == status) { // 200. success
 
-            ScreenUtility.setGridData(GridSetting["firstGrid"], result);
+            Utility.grid.setData("firstGrid", result);
         } else if (204 == status) { // 204. nocontent
 
-            ScreenUtility.pushInformation("조회 결과가 존재하지 않습니다.");
+            Utility.notification.pushInformation("조회 결과가 존재하지 않습니다.");
         } else {
 
-            ScreenUtility.processResponseError(jqXHR);
+            Utility.ajax.processResponseError(jqXHR);
         }
     }
 };

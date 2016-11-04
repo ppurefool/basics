@@ -41,3 +41,5 @@ Role
 ### TODO
 
 temp 작성
+
+로그인이력 - picker formatter 검증

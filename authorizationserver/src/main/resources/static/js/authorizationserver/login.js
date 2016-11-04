@@ -7,7 +7,7 @@
 // Ready Event
 $(document).ready(function() {
 
-    ScreenUtility.initialize(ScreenSetting);
+    Utility.initialize();
 
     ScreenSetting.processReadyEvent();
 });
@@ -15,7 +15,6 @@ $(document).ready(function() {
 // 화면 Event
 var ScreenEvent = {
 
-    // 로그인 버튼 클릭
     clickLoginButton: function() {
 
         if (!ScreenVerification.verify()) return;
@@ -37,7 +36,6 @@ var ScreenVerification = {
 // 화면 설정
 var ScreenSetting = {
 
-    // Ready Event 처리
     processReadyEvent: function() {
 
         // 이벤트 핸들러 설정
