@@ -417,6 +417,46 @@
         selectingKeys: {},
 
         /**
+         * 선택 Key 배열 정리하기
+         *
+         * 예제) Utility.grid.clearSelectingKeyArray("grid");
+         *
+         * @param identifier String
+         */
+        clearSelectingKeyArray: function(identifier) {
+
+            Utility.grid.setSelectingKeyArray(identifier, null);
+        },
+
+        /**
+         * 선택 Key 배열 설정
+         *
+         * 예제) Utility.grid.setSelectingKeyArray("grid", ["key1", "key2"]);
+         *
+         * @param identifier
+         * @param keys
+         */
+        setSelectingKeyArray: function(identifier, keys) {
+
+            Utility.grid.selectingKeys[identifier] = keys;
+        },
+
+        /**
+         * has No Data
+         *
+         * 예제) if (Utility.grid.hasNoData("grid", "선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.", true)) return;
+         *
+         * @param identifier String
+         * @param messageIfTrue String
+         * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
+         * @returns {boolean}
+         */
+        hasNoData: function(identifier, messageIfTrue, isSelected) {
+
+            return Utility.isEmptyArray(Utility.grid.getData(identifier, isSelected), messageIfTrue);
+        },
+
+        /**
          * 초기화하기
          * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
          *
@@ -456,31 +496,6 @@
         setData: $.noop,
 
         /**
-         * 선택 Key 배열 정리하기
-         *
-         * 예제) Utility.grid.clearSelectingKeyArray("grid");
-         *
-         * @param identifier String
-         */
-        clearSelectingKeyArray: function(identifier) {
-
-            Utility.grid.setSelectingKeyArray(identifier, null);
-        },
-
-        /**
-         * 선택 Key 배열 설정
-         *
-         * 예제) Utility.grid.setSelectingKeyArray("grid", ["key1", "key2"]);
-         *
-         * @param identifier
-         * @param keys
-         */
-        setSelectingKeyArray: function(identifier, keys) {
-
-            Utility.grid.selectingKeys[identifier] = keys;
-        },
-
-        /**
          * 선택하기
          * 참고) 해당 Grid, jQuery 등의 javascript file 을 include 해야한다.
          *      Utility.setSelectingKeyArray() 을 이용하여 선택 Key 배열을 미리 설정해야한다.
@@ -518,7 +533,7 @@
          * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
          * @returns Array
          */
-        getData: function() {return [];},
+        getData: function(identifier, isSelected) {return [];},
 
         /**
          * 선택여부
@@ -541,21 +556,6 @@
          * @param identifier String
          * @returns {number}
          */
-        getPageOffset: $.noop,
-
-        /**
-         * has No Data
-         *
-         * 예제) if (Utility.grid.hasNoData("grid", "선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.", true)) return;
-         *
-         * @param identifier String
-         * @param messageIfTrue String
-         * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
-         * @returns {boolean}
-         */
-        hasNoData: function(identifier, messageIfTrue, isSelected) {
-
-            return Utility.isEmptyArray(Utility.grid.getData(identifier, isSelected), messageIfTrue);
-        }
+        getPageOffset: $.noop
     };
 })();
