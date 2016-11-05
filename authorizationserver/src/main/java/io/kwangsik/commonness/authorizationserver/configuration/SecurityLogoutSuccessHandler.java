@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Security Logout Success Handler
@@ -31,11 +32,9 @@ class SecurityLogoutSuccessHandler
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                 Authentication authentication) throws IOException, ServletException {
 
-        String address = httpServletRequest.getHeader("X-FORWARDED-FOR");
-        if (null == address) address = httpServletRequest.getRemoteAddr();
-
-        if (null != authentication) this.service.process("USER_LOGOUT_SUCCESS", 1, address, authentication.getName()); // 사용자 로그아웃 성공
-        else this.service.process("USER_LOGOUT_SUCCESS", 1, address, ""); // 이미 로그아웃된 경우..
+        final String address = Optional.ofNullable(httpServletRequest.getHeader("X-FORWARDED-FOR")).orElse(httpServletRequest.getRemoteAddr());
+        if (null != authentication) this.service.process("USER_LOGOUT_SUCCESS", address, authentication.getName()); // 사용자 로그아웃 성공
+        else this.service.process("USER_LOGOUT_SUCCESS", address); // 이미 로그아웃된 경우..
 
         httpServletResponse.sendRedirect("/log-in-view");
     }

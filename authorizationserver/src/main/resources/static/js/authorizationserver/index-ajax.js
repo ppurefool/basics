@@ -10,15 +10,14 @@ var DataRequest = {
 
         Utility.grid.clear("firstGrid");
 
-        $.ajax({
+        Utility.ajax.request({
+            url: "/membership/login", // 회원 로그인 목록
+            type: "get", // 조회
             data: Utility.json.serialize($("#condition"), {
                 page: page
                 // size: 15
             }),
-            url: "/membership/login", // 회원 로그인 목록
-            type: "get", // 조회
-            success: DataResponse.inquirySuccess,
-            error: Utility.ajax.processRequestError
+            success: DataResponse.inquirySuccess
         });
     }
 };
@@ -28,17 +27,14 @@ var DataResponse = {
 
     inquirySuccess: function(result, statusText, jqXHR) {
 
-        var status = jqXHR.status; // HTTP Status Code
+        var STATUS = jqXHR.status; // HTTP Status Code
 
-        if (200 == status) { // 200. success
+        if (200 == STATUS) { // 200. success
 
             Utility.grid.setData("firstGrid", result);
-        } else if (204 == status) { // 204. nocontent
-
-            Utility.notification.pushInformation("조회 결과가 존재하지 않습니다.");
         } else {
 
-            Utility.ajax.processResponseError(jqXHR);
+            Utility.ajax.processResponseError(jqXHR, STATUS, "조회 결과가 존재하지 않습니다.");
         }
     }
 };

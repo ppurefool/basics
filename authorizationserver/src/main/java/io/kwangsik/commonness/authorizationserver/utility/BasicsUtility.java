@@ -64,11 +64,11 @@ public class BasicsUtility {
 
     public String parseQueryParameter(final String cause) {
 
-        return (!StringUtils.isEmpty(cause)? cause: null);
+        return (!StringUtils.isEmpty(cause)? cause: null); // "" -> null
     }
 
     public String parseQueryParameter(final String cause, final String prefixAndSuffix) {
 
-        return (!StringUtils.isEmpty(cause)? prefixAndSuffix + cause + prefixAndSuffix: null);
+        return (!StringUtils.isEmpty(cause)? prefixAndSuffix + cause + prefixAndSuffix: null); // "" -> null
     }
 }

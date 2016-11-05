@@ -32,8 +32,8 @@ public class Login {
     @Column(name = "typeKey", length = 50, nullable = false)
     private String type; // 유형 코드 // LOGIN_TYPE
 
-    @Column(name = "errorNumber", nullable = false)
-    private int error; // 오류 번호
+    @Column(name = "errorNumber")
+    private Integer error; // 오류 번호
 
     @Column(name = "addressName", length = 100, nullable = false)
     private String address; // 주소 이름
@@ -43,11 +43,28 @@ public class Login {
     private Date registrationDate; // 등록 일자
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "email", column = @Column(name = "registrationUserEmail", length = 320, nullable = false)))
+    @AttributeOverrides(@AttributeOverride(name = "email", column = @Column(name = "registrationUserEmail", length = 320)))
     private UserIdentifier registrationUserIdentifier; // 등록 사용자 Email
 
     // 참고) LoginDetailRegistrationService Class 에서 이용한다.
-    public Login(final String type, final int error, final String address, final String registrationUserEmail) {
+    public Login(final String type, final String address) {
+
+        this.type = type;
+        this.address = address;
+        this.registrationDate = Calendar.getInstance().getTime();
+    }
+
+    // 참고) LoginDetailRegistrationService Class 에서 이용한다.
+    public Login(final String type, final String address, final String registrationUserEmail) {
+
+        this.type = type;
+        this.address = address;
+        this.registrationDate = Calendar.getInstance().getTime();
+        this.registrationUserIdentifier = new UserIdentifier(registrationUserEmail);
+    }
+
+    // 참고) LoginDetailRegistrationService Class 에서 이용한다.
+    public Login(final String type, final Integer error, final String address, final String registrationUserEmail) {
 
         this.type = type;
         this.error = error;

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 /**
  * Security 로그인 Failure Handler
@@ -34,8 +35,7 @@ class SecurityLoginFailureHandler
                                         AuthenticationException e) throws IOException, ServletException {
 
         final String eToString;
-        final int resultNumber;
-        String address;
+        final int error;
 
         if (httpServletRequest.getHeader("accept").contains("json")) {
 
@@ -43,39 +43,40 @@ class SecurityLoginFailureHandler
 
             if (eToString.startsWith("org.springframework.security.authentication.InternalAuthenticationServiceException:")) {
 
-                resultNumber = -1;
+                error = -1;
             } else if (eToString.startsWith("org.springframework.security.authentication.BadCredentialsException:")) {
 
-                resultNumber = -2;
+                error = -2;
             } else if (eToString.startsWith("org.springframework.security.authentication.DisabledException:")) {
 
-                resultNumber = -3;
+                error = -3;
             } else if (eToString.startsWith("org.springframework.security.authentication.CredentialsExpiredException:")) {
 
-                resultNumber = -4;
+                error = -4;
             } else if (eToString.startsWith("org.springframework.security.authentication.LockedException:")) {
 
-                resultNumber = -5;
+                error = -5;
             } else if (eToString.startsWith("org.springframework.security.authentication.AccountExpiredException:")) {
 
-                resultNumber = -6;
+                error = -6;
             } else if (eToString.startsWith("org.springframework.security.web.authentication.session.SessionAuthenticationException:")) {
 
-                resultNumber = -7;
+                error = -7;
             } else {
                 System.out.println("===== eToString=" + eToString);
-                resultNumber = -9;
+                error = -9;
             }
 
-            address = httpServletRequest.getHeader("X-FORWARDED-FOR");
-            if (null == address) address = httpServletRequest.getRemoteAddr();
-
-            this.service.process("USER_LOGIN_FAILURE", resultNumber, address, httpServletRequest.getParameter("user-email")); // 사용자 로그인 실패
+            // 사용자 로그인 실패
+            this.service.process(
+                    "USER_LOGIN_FAILURE",
+                    error,
+                    Optional.ofNullable(httpServletRequest.getHeader("X-FORWARDED-FOR")).orElse(httpServletRequest.getRemoteAddr()),
+                    httpServletRequest.getParameter("user-email"));
 
             PrintWriter printWriter = httpServletResponse.getWriter();
             e.getMessage();
-            printWriter.print(StringFormatter.format(
-                    "{\"input\": null, \"inputList\": null, \"output\": {\"resultNumber\": %d, \"redirectUrl\": null}, \"outputList\": null}", resultNumber).get());
+            printWriter.print(StringFormatter.format("{\"error\": %d, \"redirectURL\": null}", error).get());
             printWriter.flush();
             printWriter.close();
         }

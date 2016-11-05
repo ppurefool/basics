@@ -8,7 +8,6 @@
 $(document).ready(function() {
 
     Utility.initialize();
-
     ScreenSetting.processReadyEvent();
 });
 
@@ -28,6 +27,9 @@ var ScreenVerification = {
 
     // 검증
     verify: function() {
+
+        if (Utility.jquery.isEmptyVal($('[name="user-email"]'), "E-mail 항목을 입력하십시오.")) return false;
+        if (Utility.jquery.isEmptyVal($('[name="password-hash"]'), "Password 항목을 입력하십시오.")) return false;
 
         return true;
     }

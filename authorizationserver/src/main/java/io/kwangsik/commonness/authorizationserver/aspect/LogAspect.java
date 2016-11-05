@@ -38,7 +38,7 @@ public class LogAspect {
 
             className = stackTraceElement.getClassName().split("\\$\\$")[0];
             methodName = stackTraceElement.getMethodName();
-            parameters = Arrays.stream(cause.getArgs()).map(arg -> (null == arg? "null": arg.toString())).collect(Collectors.joining(", \n"));
+            parameters = Arrays.stream(cause.getArgs()).map(arg -> Optional.ofNullable(arg).map(Object::toString).orElse("null")).collect(Collectors.joining(", \n"));
             debugFormat = "아래 내용은 {}{}{}{}\n\u001B[1m\u001B[35m================================================================================================= : \u001B[0m\n{}\n------------------------------------------------------------------------------------------------- : ";
 
             System.out.println("\n");
@@ -49,7 +49,7 @@ public class LogAspect {
     @AfterReturning(pointcut="setRequestMappingPointCut()", returning="result")
     private Object printChannelDTOResult(final Object result) {
 
-        printResult(null == result? "null": result.toString());
+        printResult(Optional.ofNullable(result).map(Object::toString).orElse("null"));
 
         return result;
     }

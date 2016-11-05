@@ -6,10 +6,10 @@
 
 (function() { var selfName = "Utility"; if (null != window[selfName]) return;
 
-    var verifyJQuery = function(messageDisplayYesorno) {
+    var verifyJQuery = function(isMessageDisplay) {
 
         var result = (null != window["jQuery"]);
-        if (messageDisplayYesorno && !result) alert("jQuery 를 참조할 수 없습니다. jQuery 를 Include 해주세요.");
+        if (isMessageDisplay && !result) alert("jQuery 를 참조할 수 없습니다. jQuery 를 Include 해주세요.");
         return result;
     };
     var verifyLoading = function() {return (verifyJQuery() && null != window["ax5"] && null != ax5["ui"]["mask"]);};
@@ -22,33 +22,55 @@
     window[selfName] = {
 
         /**
+         * Empty Array여부
+         *
+         * 예제) true == Utility.isEmptyArray(null)
+         *      true == Utility.isEmptyArray([]])
+         *
+         * @param array Array
+         * @param messageIfTrue String
+         * @returns {boolean}
+         */
+        isEmptyArray: function(array, messageIfTrue) {
+
+            var result = (null == array || 0 >= array.length);
+
+            if (null != messageIfTrue & result) Utility.notification.pushWarning(messageIfTrue);
+
+            return result;
+        },
+
+        /**
+         * Empty String여부
+         *
+         * 예제) true == Utility.isEmptyString(null)
+         *      true == Utility.isEmptyString("")
+         *
+         * @param cause
+         * @param messageIfTrue String
+         * @returns {boolean}
+         */
+        isEmptyString: function(cause, messageIfTrue) {
+
+            var result = (null == cause || "" == cause);
+
+            if (null != messageIfTrue && result) Utility.notification.pushWarning(messageIfTrue);
+
+            return result;
+        },
+
+        /**
          * Coalesce
          *
          * 예제) "default value" == Utility.coalesce(null, "default value");
          *
          * @param cause Object
          * @param defaultValue Object 참고) null 인 경우 기본값으로 "" 을 사용한다.
-         * @returns Object
+         * @returns {Object}
          */
         coalesce: function(cause, defaultValue) {
 
-            if (null == defaultValue) defaultValue = "";
-            return (null == cause? defaultValue: cause);
-        },
-
-        /**
-         * Is Empty
-         *
-         * 예제) true == Utility.isEmpty(null);
-         *      true == Utility.isEmpty("");
-         *      false == Utility.isEmpty(0);
-         *      false == Utility.isEmpty("a");
-         *
-         * @param data Object
-         */
-        isEmpty: function(data) {
-
-            return (null == data || 0 < data.toString().length);
+            return (null != cause? cause: (null != defaultValue? defaultValue: ""));
         },
 
         /**
@@ -98,7 +120,7 @@
          *
          * @param cause JSON
          * @param keys String (필수) 참고) 구분자는 "." 를 이용한다.
-         * @returns Object
+         * @returns {Object}
          */
         getValue: function (cause, keys) {
 
@@ -107,7 +129,7 @@
             var KEY_ARRAY;
             var LENGTH;
 
-            if (null != keys && 0 < keys.length) {
+            if (!Utility.isEmptyArray(keys)) {
 
                 KEY_ARRAY = keys.split(".");
                 LENGTH = KEY_ARRAY.length;
@@ -130,39 +152,28 @@
          * @param cause JSON
          * @param keys String (필수)
          * @param defaultValue Object 참고) null 인 경우 기본값으로 "" 을 사용한다.
-         * @returns Object
+         * @returns {Object}
          */
         coalesceValue: function (cause, keys, defaultValue) {
 
-            var result = cause;
-
-            var KEY_ARRAY;
-            var LENGTH;
-
-            if (null != keys && 0 < keys.length) {
-
-                KEY_ARRAY = keys.split(".");
-                LENGTH = KEY_ARRAY.length;
-
-                for (var index = 0; index < LENGTH; index++) {
-
-                    if (null == result) break;
-                    result = result[KEY_ARRAY[index]];
-                }
-            }
-
-            return Utility.coalesce(result, defaultValue);
+            return Utility.coalesce(Utility.json.getValue(cause, keys), defaultValue);
         },
 
-        isNullValue: function(cause, keys) {
-
-            return (null == Utility.json.getValue(cause, keys));
-        },
-
+        /**
+         * Null 값여부
+         *
+         * 예제) true == Utility.isEmptyValue(null)
+         *      true == Utility.isEmptyValue("")
+         *
+         * @param cause JSON
+         * @param keys String (필수)
+         * @param messageIfTrue String
+         * @returns {boolean}
+         */
         isEmptyValue: function(cause, keys, messageIfTrue) {
 
-            var value = Utility.json.getValue(cause, keys);
-            var result = (null == value || 0 >= value.length);
+            var VALUE = Utility.json.getValue(cause, keys);
+            var result = Utility.json.isEmptyString(VALUE);
 
             if (null != messageIfTrue && result)
                 Utility.notification.pushWarning((index + 1) + " 번째 행의 사용자 E-mail 항목값이 존재하지 않습니다. 사용자 E-mail 항목을 입력하십시오.");
@@ -194,27 +205,30 @@
          * @param parent jQuery (필수)
          * @param additionData JSON
          * @param delimiter String
+         * @returns {JSON}
          */
         serialize: function (parent, additionData, delimiter) {
 
             var result = null;
 
+            var DELIMITER;
+
             if (verifyJQuery(true)) {
 
                 result = {};
-                if (null == delimiter) delimiter = ",";
+                DELIMITER = Utility.coalesce(delimiter, ",");
 
                 $.each(parent.find('[name]').serializeArray(), function (index, detail) {
 
-                    var name = detail.name;
-                    var value = detail.value;
+                    var NAME = detail.name;
+                    var VALUE = detail.value;
 
-                    if (result.hasOwnProperty(name)) {
+                    if (result.hasOwnProperty(NAME)) {
 
-                        result[name] = result[name].toString() + delimiter + value.toString();
+                        result[NAME] = result[NAME].toString() + DELIMITER + VALUE.toString();
                     } else {
 
-                        result[name] = value;
+                        result[NAME] = VALUE;
                     }
                 });
 
@@ -231,6 +245,29 @@
     Utility.ajax = {
 
         /**
+         * 요청
+         *
+         * 예제)
+         * Utility.ajax.request({...});
+         *
+         * @param settings JSON
+         */
+        request: function(settings) {
+
+            var TYPE = Utility.json.coalesceValue(settings, "type", "get");
+
+            if (null != settings["data"] && "get" != TYPE) {
+
+                settings.data = JSON.stringify(settings.data);
+                settings["contentType"] = "application/json";
+            }
+
+            if (null == settings["error"]) settings["error"] = Utility.ajax.processRequestError;
+
+            $.ajax(settings);
+        },
+
+        /**
          * 응답 오류 처리하기
          *
          * 예제)
@@ -238,22 +275,28 @@
          *     ...,
          *     success: function(result, statusText, jqXHR) {
          *
-         *         var status = jqXHR.status; // HTTP Status Code
+         *         var STATUS = jqXHR.status; // HTTP Status Code
          *
-         *         if (200 == status) { // 200. success
-         *             ;
-         *         else if (204 == status) { // 204. nocontent
+         *         if (200 == STATUS) { // 200. success
          *             ;
          *         else
-         *             Utility.ajax.processResponseError(jqXHR);
+         *             Utility.ajax.processResponseError(jqXHR, STATUS);
          *     }
          * });
          *
-         * @param json JSON
+         * @param jqXHR JSON (필수)
+         * @param status number (필수)
+         * @param messageIfNoContent String
          */
-        processResponseError: function(json) {
+        processResponseError: function(jqXHR, status, messageIfNoContent) {
 
-            alert("요청이 성공하였으나 예상하지 못한 결과입니다. 관리자에게 문의해주세요." + (null != json? "\n\n" + JSON.stringify(json): ""));
+            if (204 == status) { // 204. nocontent
+
+                if (null != messageIfNoContent) Utility.notification.pushInformation(messageIfNoContent);
+            } else if (200 != status) { // 200. success
+
+                alert("요청이 성공하였으나 예상하지 못한 결과입니다. 관리자에게 문의해주세요.\n\n" + JSON.stringify(jqXHR));
+            }
         },
 
         /**
@@ -261,18 +304,18 @@
          *
          * 예제) $.ajax({..., error: Utility.ajax.processRequestError});
          *
-         * @param json JSON
+         * @param jqXHR JSON
          */
-        processRequestError: function(json) {
+        processRequestError: function(jqXHR) {
 
-            if (403 == json["status"]) {
+            // if (403 == jqXHR.status) {
 
-                Utility.notification.pushWarning("로그아웃되어 요청할 수 없습니다. 다시 로그인해주세요.");
-                window.open("/log-in-view", "loginInView", "width=300, height=400"); // TODO 로그인 완료 후 닫기 처리
-            } else {
+                // Utility.notification.pushWarning("로그아웃되어 요청할 수 없습니다. 다시 로그인해주세요.");
+                // window.open("/log-in-view", "loginInView", "width=300, height=400"); // TODO 로그인 완료 후 닫기 처리
+            // } else {
 
-                alert("요청이 성공하였으나 예상하지 못한 결과입니다. 관리자에게 문의해주세요." + (null != json? "\n\n" + JSON.stringify(json): ""));
-            }
+                alert("요청 결과 오류가 발생했습니다. 관리자에게 문의해주세요.\n\n" + JSON.stringify(jqXHR));
+            // }
         }
     };
 
@@ -283,11 +326,21 @@
 
         self: {open: null, close: null}, // Utility.initialize() 호출시 재설정된다.
 
+        /**
+         * Loading 열기
+         *
+         * 예제) Utility.loading.open();
+         */
         open: function() {
 
             Utility.loading.self.open();
         },
 
+        /**
+         * Loading 닫기
+         *
+         * 예제) Utility.loading.close();
+         */
         close: function() {
 
             Utility.loading.self.close();
@@ -331,6 +384,29 @@
             Utility.notification.self.push({icon: '<i class="fa fa-info-circle" style="color: steelblue"></i>', msg: message});
         }
     };
+
+    // =================================================================================================================
+    // Utility jQuery 영역
+    // -----------------------------------------------------------------------------------------------------------------
+    Utility.jquery = {
+
+        /**
+         * Empty Val여부
+         *
+         * 예제) if (Utility.jquery.isEmptyVal($('[name="user-email"]'), "E-mail 항목을 입력하십시오.")) return;
+         *
+         * @param jQuery Object
+         * @param messageIfTrue String
+         * @returns {boolean}
+         */
+        isEmptyVal: function(jQuery, messageIfTrue) {
+
+            var result = Utility.isEmptyString(jQuery.val(), messageIfTrue);
+            if (result) jQuery.focus();
+
+            return result;
+        }
+    }
 
     // =================================================================================================================
     // Utility Grid 영역
@@ -424,21 +500,21 @@
          */
         select: function(identifier, key) {
 
-            var keys;
-            var selectingKeyArray;
-            var selectingKeyArrayLength;
+            var KEYS;
+            var SELECTING_KEY_ARRAY;
+            var SELECTING_KEY_ARRAY_LENGTH;
             var rowIndex;
 
             if (!verifyJQuery() || !verifyGrid()) return;
             if (null == Utility.grid.selectingKeys[identifier]) return;
 
             // keys = $.map(grid.getList(), function(detail) {return detail[key];});
-            selectingKeyArray = Utility.grid.selectingKeys[identifier];
-            selectingKeyArrayLength = selectingKeyArray.length;
+            SELECTING_KEY_ARRAY = Utility.grid.selectingKeys[identifier];
+            SELECTING_KEY_ARRAY_LENGTH = SELECTING_KEY_ARRAY.length;
 
-            for (var index = 0; index < selectingKeyArrayLength; index++) {
+            for (var index = 0; index < SELECTING_KEY_ARRAY_LENGTH; index++) {
 
-                rowIndex = $.inArray(selectingKeyArray[index], keys);
+                rowIndex = $.inArray(SELECTING_KEY_ARRAY[index], KEYS);
                 // if (0 <= rowIndex) ;
             }
 
@@ -466,13 +542,13 @@
          * 예제) Utility.grid.getData("grid");
          *
          * @param identifier String
-         * @param selectedYesorno boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
+         * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
          * @returns Array
          */
-        getData: function(identifier, selectedYesorno) {
+        getData: function(identifier, isSelected) {
 
             if (!verifyGrid()) return [];
-            if (null == selectedYesorno) selectedYesorno = false;
+            var IS_SELECTED = Utility.coalesce(isSelected, false);
         },
 
         /**
@@ -482,8 +558,8 @@
          * 예제) Utility.grid.isSelected("grid");
          *
          * @param identifier String
-         * @param index int
-         * @returns boolean
+         * @param index number
+         * @returns {boolean}
          */
         isSelected: function(identifier, index) {
 
@@ -497,11 +573,26 @@
          * 예제) Utility.grid.getPageOffset("grid");
          *
          * @param identifier String
-         * @returns int
+         * @returns {number}
          */
         getPageOffset: function(identifier) {
 
             if (!verifyGrid()) return -1;
+        },
+
+        /**
+         * has No Data
+         *
+         * 예제) if (Utility.grid.hasNoData("grid", "선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.", true)) return;
+         *
+         * @param identifier String
+         * @param messageIfTrue String
+         * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
+         * @returns {boolean}
+         */
+        hasNoData: function(identifier, messageIfTrue, isSelected) {
+
+            return Utility.isEmptyArray(Utility.grid.getData(identifier, isSelected), messageIfTrue);
         }
     };
 })();

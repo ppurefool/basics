@@ -40,6 +40,12 @@ Role
 
 ### TODO
 
-temp 작성
+필수입력항목 표시
 
-로그인이력 - picker formatter 검증
+ajax 공통함수 작성
+
+grid 공통함수 작성 - SlickGrid
+
+로그인이력 조회조건 추가 - picker, formatter, 검증로직
+
+Generator 작성 - temp Entity

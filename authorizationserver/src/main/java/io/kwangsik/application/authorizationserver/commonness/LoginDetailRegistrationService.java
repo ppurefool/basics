@@ -25,6 +25,28 @@ public class LoginDetailRegistrationService {
     /**
      * 처리
      * @param typeCode 유형 코드 (필수) 참고) 부모 코드 Key: LOGIN_TYPE. 로그인 유형
+     * @param address 주소 (필수)
+     * @param registrationUserEmail 등록 사용자 Email (필수)
+     */
+    public void process(final String typeCode, final String address) {
+
+        repository.save(new Login(typeCode, address)); // 로그인 상세를 저장한다.
+    }
+
+    /**
+     * 처리
+     * @param typeCode 유형 코드 (필수) 참고) 부모 코드 Key: LOGIN_TYPE. 로그인 유형
+     * @param address 주소 (필수)
+     * @param registrationUserEmail 등록 사용자 Email (필수)
+     */
+    public void process(final String typeCode, final String address, final String registrationUserEmail) {
+
+        repository.save(new Login(typeCode, address, registrationUserEmail)); // 로그인 상세를 저장한다.
+    }
+
+    /**
+     * 처리
+     * @param typeCode 유형 코드 (필수) 참고) 부모 코드 Key: LOGIN_TYPE. 로그인 유형
      * @param error 오류 (필수)
      * @param address 주소 (필수)
      * @param registrationUserEmail 등록 사용자 Email (필수)

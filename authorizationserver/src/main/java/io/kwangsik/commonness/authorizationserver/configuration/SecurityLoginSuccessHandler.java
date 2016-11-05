@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 /**
  * Security 로그인 Success Handler
@@ -32,27 +33,24 @@ class SecurityLoginSuccessHandler
     }
 
     @Override // Spring Security 를 이용하기 위하여 작성한다.
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                                        Authentication authentication) throws IOException, ServletException {
-        final SavedRequest savedRequest;
-        final String redirectUrl;
-        final int resultNumber = 1;
-        String address;
+    public void onAuthenticationSuccess(final HttpServletRequest httpServletRequest,
+                                        final HttpServletResponse httpServletResponse,
+                                        final Authentication authentication) throws IOException, ServletException {
 
         if (httpServletRequest.getHeader("accept").contains("json")) {
 
-            savedRequest = new HttpSessionRequestCache().getRequest(httpServletRequest, httpServletResponse);
-            redirectUrl = (null != savedRequest? savedRequest.getRedirectUrl(): "/");
-
-            address = httpServletRequest.getHeader("X-FORWARDED-FOR");
-            if (null == address) address = httpServletRequest.getRemoteAddr();
-
-            this.service.process("USER_LOGIN_SUCCESS", resultNumber, address, authentication.getName()); // 사용자 로그인 성공
+            this.service.process(
+                    "USER_LOGIN_SUCCESS",
+                    Optional.ofNullable(httpServletRequest.getHeader("X-FORWARDED-FOR")).orElse(httpServletRequest.getRemoteAddr()),
+                    authentication.getName()); // 사용자 로그인 성공
 
             PrintWriter printWriter = httpServletResponse.getWriter();
-            printWriter.print(StringFormatter.format(
-                    "{\"input\": null, \"inputList\": null, \"output\": {\"resultNumber\": %d, \"redirectUrl\": \"%s\"}, \"outputList\": null}",
-                    resultNumber, redirectUrl).get());
+            printWriter.print(
+                    StringFormatter.format(
+                            "{\"error\": null, \"redirectURL\": \"%s\"}",
+                            Optional.ofNullable(new HttpSessionRequestCache().getRequest(httpServletRequest, httpServletResponse))
+                                    .map(SavedRequest::getRedirectUrl).orElse("/")
+                    ).get());
             printWriter.flush();
             printWriter.close();
         }

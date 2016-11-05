@@ -8,7 +8,6 @@
 $(document).ready(function() {
 
     Utility.initialize();
-
     ScreenSetting.processReadyEvent();
 
     $('#inquiryButton').click();
@@ -51,11 +50,7 @@ var ScreenVerification = {
         var list;
         var length;
 
-        if (0 >= Utility.grid.getData(gridIdentifier, true).length) {
-
-            Utility.notification.pushWarning("선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.");
-            return false;
-        }
+        if (Utility.grid.hasNoData(gridIdentifier, "선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.", true)) return false;
 
         list = Utility.grid.getData(gridIdentifier);
         length = list.length;
@@ -75,13 +70,7 @@ var ScreenVerification = {
 
     verifyDeletingData: function() {
 
-        if (0 >= DataRequest.getDeletingKeys().length) {
-
-            Utility.notification.pushWarning("선택된 데이터가 존재하지 않습니다. 삭제할 그리드 데이터를 선택해주세요.");
-            return false;
-        }
-
-        return true;
+        return (!Utility.isEmptyArray(DataRequest.getDeletingKeys(), "선택된 데이터가 존재하지 않습니다. 삭제할 그리드 데이터를 선택해주세요."));
     }
 };
 
