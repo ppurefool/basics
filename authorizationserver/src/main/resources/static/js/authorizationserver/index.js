@@ -27,7 +27,7 @@ var GridSetting = {
 
     initialize: function() {
 
-        var gridIdentifier = "firstGrid";
+        var gridIdentifier = "jsGrid";
 
         Utility.grid.initialize(gridIdentifier, {
             columns: [ // 컬럼 목록 설정 // key. Data 바인딩시 Mapping 할 field 이름

@@ -5,6 +5,12 @@
 
     <th:block th:include="thymeleaf/authorizationserver/fragment :: head" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.css" /><!-- jsGrid -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid-theme.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.js"></script>
+
+    <!--<script th:src="@{../../js//authorizationserver/utility.grid.js}"></script>&lt;!&ndash; Utility Grid &ndash;&gt;-->
+
     <script th:src="@{../../js/authorizationserver/index.js}"></script><!-- Index -->
     <script th:src="@{../../js/authorizationserver/index-ajax.js}"></script><!-- Index AJAX -->
 
@@ -53,7 +59,7 @@
 
                         <!-- Grid -->
                         <br />
-                        <div data-ax5grid="firstGrid" style="height: 434px;"></div>
+                        <div id="jsGrid" style="height: 434px;"></div>
 
                     </div>
                     <!-- /.panel-body -->

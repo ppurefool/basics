@@ -14,7 +14,6 @@
     };
     var verifyLoading = function() {return (verifyJQuery() && null != window["ax5"] && null != ax5["ui"]["mask"]);};
     var verifyNotification = function() {return (verifyJQuery() && null != window["ax5"] && null != ax5["ui"]["toast"])};
-    var verifyGrid = function() {return false};
 
     // =================================================================================================================
     // Utility 영역
@@ -407,14 +406,14 @@
 
             return result;
         }
-    }
+    };
 
     // =================================================================================================================
     // Utility Grid 영역
     // -----------------------------------------------------------------------------------------------------------------
     Utility.grid = {
 
-        self: {}, // Utility.grid.initialize() 호출시 재설정된다.
+        self: null, // Utility.grid.initialize() 호출시 재설정된다.
         selectingKeys: {},
 
         /**
@@ -426,15 +425,14 @@
          * @param identifier String
          * @param configuration JSON
          */
-        initialize: function(identifier, configuration) {
-
-            if (verifyGrid()) {
-
-            } else {
-
-                Utility.grid.selectingKeys[identifier] = null;
-            }
-        },
+        initialize: $.noop,
+        // initialize: function(identifier, configuration) {
+        //
+        //     Utility.grid.self = {};
+        //     Utility.grid.self[identifier] = null;
+        //
+        //     Utility.grid.selectingKeys[identifier] = null;
+        // },
 
         /**
          * 정리하기
@@ -444,10 +442,7 @@
          *
          * @param identifier String
          */
-        clear: function(identifier) {
-
-            if (!verifyGrid()) return;
-        },
+        clear: $.noop,
 
         /**
          * Data 설정
@@ -458,10 +453,7 @@
          * @param identifier String
          * @param data JSON
          */
-        setData: function(identifier, data) {
-
-            if (!verifyGrid()) return;
-        },
+        setData: $.noop,
 
         /**
          * 선택 Key 배열 정리하기
@@ -499,28 +491,11 @@
          * @param identifier String
          * @param key String
          */
-        select: function(identifier, key) {
-
-            var KEYS;
-            var SELECTING_KEY_ARRAY;
-            var SELECTING_KEY_ARRAY_LENGTH;
-            var rowIndex;
-
-            if (!verifyJQuery() || !verifyGrid()) return;
-            if (null == Utility.grid.selectingKeys[identifier]) return;
-
-            // keys = $.map(grid.getList(), function(detail) {return detail[key];});
-            SELECTING_KEY_ARRAY = Utility.grid.selectingKeys[identifier];
-            SELECTING_KEY_ARRAY_LENGTH = SELECTING_KEY_ARRAY.length;
-
-            for (var index = 0; index < SELECTING_KEY_ARRAY_LENGTH; index++) {
-
-                rowIndex = $.inArray(SELECTING_KEY_ARRAY[index], KEYS);
-                // if (0 <= rowIndex) ;
-            }
-
-            Utility.grid.clearSelectingKeyArray(identifier);
-        },
+        select: $.noop,
+        // select: function(identifier, key) {
+        //
+        //     Utility.grid.clearSelectingKeyArray(identifier);
+        // },
 
         /**
          * 행 추가하기
@@ -531,10 +506,7 @@
          * @param identifier String
          * @param data JSON
          */
-        addRow: function(identifier, data) {
-
-            if (!verifyGrid()) return;
-        },
+        addRow: $.noop,
 
         /**
          * Data 가져오기
@@ -546,11 +518,7 @@
          * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
          * @returns Array
          */
-        getData: function(identifier, isSelected) {
-
-            if (!verifyGrid()) return [];
-            var IS_SELECTED = Utility.coalesce(isSelected, false);
-        },
+        getData: function() {return [];},
 
         /**
          * 선택여부
@@ -562,10 +530,7 @@
          * @param index number
          * @returns {boolean}
          */
-        isSelected: function(identifier, index) {
-
-            if (!verifyGrid()) return false;
-        },
+        isSelected: $.noop,
 
         /**
          * Page Offset 가져오기
@@ -576,10 +541,7 @@
          * @param identifier String
          * @returns {number}
          */
-        getPageOffset: function(identifier) {
-
-            if (!verifyGrid()) return -1;
-        },
+        getPageOffset: $.noop,
 
         /**
          * has No Data
