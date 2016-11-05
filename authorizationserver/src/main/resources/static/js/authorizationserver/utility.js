@@ -21,25 +21,6 @@
     window[selfName] = {
 
         /**
-         * Empty Array여부
-         *
-         * 예제) true == Utility.isEmptyArray(null)
-         *      true == Utility.isEmptyArray([]])
-         *
-         * @param array Array
-         * @param messageIfTrue String
-         * @returns {boolean}
-         */
-        isEmptyArray: function(array, messageIfTrue) {
-
-            var result = (null == array || 0 >= array.length);
-
-            if (null != messageIfTrue && result) Utility.notification.pushWarning(messageIfTrue);
-
-            return result;
-        },
-
-        /**
          * Empty String여부
          *
          * 예제) true == Utility.isEmptyString(null)
@@ -52,7 +33,24 @@
         isEmptyString: function(cause, messageIfTrue) {
 
             var result = (null == cause || "" == cause);
+            if (null != messageIfTrue && result) Utility.notification.pushWarning(messageIfTrue);
 
+            return result;
+        },
+
+        /**
+         * Empty Array여부
+         *
+         * 예제) true == Utility.isEmptyArray(null)
+         *      true == Utility.isEmptyArray([]])
+         *
+         * @param array Array
+         * @param messageIfTrue String
+         * @returns {boolean}
+         */
+        isEmptyArray: function(array, messageIfTrue) {
+
+            var result = (null == array || 0 >= array.length);
             if (null != messageIfTrue && result) Utility.notification.pushWarning(messageIfTrue);
 
             return result;

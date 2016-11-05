@@ -1,222 +1,167 @@
 /**
- * Utility Grid
- * 참고) Slick Grid 를 이용한다.
+ * Utility Grid - jsGrid
+ * 참고) jsgrid.min.css, jsgrid-theme.min.css, jsgrid.min.js 등의 File 을 Include 해야한다.
  *
  * @author Kwangsik You
  */
 "use strict";
 
-(function() { var selfName = "Utility"; if (null == window[selfName] || null == Utility["grid"]) return;
+(function() { if (null == window["Utility"] || null == Utility["grid"]) return;
 
-    // =================================================================================================================
-    // Utility Grid 영역
-    // -----------------------------------------------------------------------------------------------------------------
-    Utility["grid"] = {
+    /**
+     * 초기화하기
+     *
+     * 예제) Utility.grid.initialize("grid", ...);
+     *
+     * @param identifier String
+     * @param configuration JSON
+     */
+    Utility.grid.initialize = function(identifier, configuration) {
 
-        self: {}, // Utility.grid.initialize() 호출시 재설정된다.
-        selectingKeys: {},
+        if (null == window["jsGrid"]) {
 
-        /**
-         * 초기화하기
-         * 참고) slick.core, slick.grid 등의 javascript file 을 include 해야한다.
-         *
-         * 예제) Utility.grid.initialize("grid", ...);
-         *
-         * @param identifier String
-         * @param configuration JSON
-         */
-        initialize: function(identifier, configuration) {
+            alert("jsGrid 관련 File 들이 누락되었습니다. 관리자에게 문의하십시오. : jsGrid is null!");
+        } else {
 
-            if (!verifyGrid(true)) return;
+            var HEIGHT_NAME = "height";
+            var HEIGHT = $("#jsGrid").css(HEIGHT_NAME);
+            if (null == configuration[HEIGHT_NAME] && "0px" != HEIGHT) configuration[HEIGHT_NAME] = HEIGHT;
 
-            $("#" + identifier).jsGrid({
-                width: "100%",
-                // height: "400px",
-                height: "434px",
+            $("#" + identifier).jsGrid($.extend(true, {
+                // fields: [
+                //     {
+                //         type: "",
+                //         name: "",
+                //         title: "",
+                //         align: "",
+                //         width: 100,
+                //         visible: true,
+                //
+                //         css: "",
+                //         headercss: "",
+                //         filtercss: "",
+                //         insertcss: "",
+                //         editcss: "",
+                //
+                //         filtering: true,
+                //         inserting: true,
+                //         editing: true,
+                //         sorting: true,
+                //         sorter: "string",
+                //
+                //         headerTemplate: function() { ... },
+                //         itemTemplate: function(value, item) { ... },
+                //         filterTemplate: function() { ... },
+                //         insertTemplate: function() { ... },
+                //         editTemplate: function(value, item) { ... },
+                //
+                //         filterValue: function() { ... },
+                //         insertValue: function() { ... },
+                //         editValue: function() { ... },
+                //
+                //         cellRenderer: null,
+                //
+                //         validate: null
+                //     }
+                // ],
+                // data: [],
+                //
+                autoload: true,// autoload: false,
+                // controller: {
+                //     loadData: $.noop,
+                //     insertItem: $.noop,
+                //     updateItem: $.noop,
+                //     deleteItem: $.noop
+                // },
+                //
+                width: "100%",// width: "auto", // TODO
+                // height: "auto",
+                //
+                // heading: true,
+                // filtering: false,
+                // inserting: false,
+                // editing: false,
+                selecting: false,// selecting: true,
+                sorting: true,// sorting: false,
+                // paging: false,
+                // pageLoading: false,
+                //
+                // rowClass: function(item, itemIndex) { ... },
+                // rowClick: function(args) { ... },
+                // rowDoubleClick: function(args) { ... },
+                //
+                noDataContent: "조회 결과가 존재하지 않습니다.",// noDataContent: "Not found",
+                //
+                // confirmDeleting: true,
+                // deleteConfirm: "Are you sure?",
+                //
+                // pagerContainer: null,
+                // pageIndex: 1,
+                // pageSize: 20,
+                // pageButtonCount: 15,
+                // pagerFormat: "Pages: {first} {prev} {pages} {next} {last}    {pageIndex} of {pageCount}",
+                // pagePrevText: "Prev",
+                // pageNextText: "Next",
+                // pageFirstText: "First",
+                // pageLastText: "Last",
+                // pageNavigatorNextText: "...",
+                // pageNavigatorPrevText: "...",
+                //
+                // invalidNotify: function(args) { ... }
+                // invalidMessage: "Invalid data entered!",
+                //
+                // loadIndication: true,
+                // loadIndicationDelay: 500,
+                // loadMessage: "Please, wait...",
+                // loadShading: true,
+                //
+                // updateOnResize: true,
+                //
+                // rowRenderer: null,
+                // headerRowRenderer: null,
+                // filterRowRenderer: null,
+                // insertRowRenderer: null,
+                // editRowRenderer: null
+            }, configuration));
+        }
+    };
 
-                inserting: true,
-                editing: true,
-                sorting: true,
-                paging: true,
+    /**
+     * 정리하기
+     * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
+     *
+     * 예제) Utility.grid.clear("grid");
+     *
+     * @param identifier String
+     */
+    Utility.grid.clear = function(identifier) {
 
-                // data: clients,
+        $("#" + identifier).jsGrid("option", "data", []);
+    };
 
-                fields: [
-                    // { name: "Name", type: "text", width: 150, validate: "required" },
-                    // { name: "Age", type: "number", width: 50 },
-                    // { name: "Address", type: "text", width: 200 },
-                    // { name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name" },
-                    // { name: "Married", type: "checkbox", title: "Is Married", sorting: false },
-                    // { type: "control" }
+    /**
+     * Data 설정
+     * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
+     *
+     * 예제) Utility.grid.setData("grid", ...);
+     *
+     * @param identifier String
+     * @param data JSON
+     */
+    Utility.grid.setData = function(identifier, data) {
 
-                    {name: "number", title: "번호", width: 100},
-                    {name: "typeName", title: "로그인 유형", width: 120},
-                    {name: "errorName", title: "오류", width: 100},
-                    {name: "address", title: "IP 주소", width: 160},
-                    {name: "registrationDate", title: "등록 일시", width: 170},
-                    {name: "registrationUserEmail", title: "사용자 E-mail", width: 260}
-                ]
-            });
-        },
+        $("#" + identifier).jsGrid("option", "data", data["outputList"]);
+    };
 
-        /**
-         * 정리하기
-         * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-         *
-         * 예제) Utility.grid.clear("grid");
-         *
-         * @param identifier String
-         */
-        clear: function(identifier) {
+    Utility.grid.dateItemTemplate = function(value) {
 
-            if (!verifyGrid()) return;
-        },
+        if (null != value) {
 
-        /**
-         * Data 설정
-         * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-         *
-         * 예제) Utility.grid.setData("grid", ...);
-         *
-         * @param identifier String
-         * @param data JSON
-         */
-        setData: function(identifier, data) {
+            var date = new Date(value);
+            return date.toISOString().substring(0, 10) + " " + date.toTimeString().substring(0, 8);
+        } else {
 
-            if (!verifyGrid()) return;
-        },
-
-        /**
-         * 선택 Key 배열 정리하기
-         *
-         * 예제) Utility.grid.clearSelectingKeyArray("grid");
-         *
-         * @param identifier String
-         */
-        clearSelectingKeyArray: function(identifier) {
-
-            Utility.grid.setSelectingKeyArray(identifier, null);
-        },
-
-        /**
-         * 선택 Key 배열 설정
-         *
-         * 예제) Utility.grid.setSelectingKeyArray("grid", ["key1", "key2"]);
-         *
-         * @param identifier
-         * @param keys
-         */
-        setSelectingKeyArray: function(identifier, keys) {
-
-            Utility.grid.selectingKeys[identifier] = keys;
-        },
-
-        /**
-         * 선택하기
-         * 참고) 해당 Grid, jQuery 등의 javascript file 을 include 해야한다.
-         *      Utility.setSelectingKeyArray() 을 이용하여 선택 Key 배열을 미리 설정해야한다.
-         *
-         * 예제) Utility.grid.setSelectingKeyArray("grid", ["key1", "key2"]);
-         *      Utility.grid.select(GridSetting["firstGrid"], "key");
-         *
-         * @param identifier String
-         * @param key String
-         */
-        select: function(identifier, key) {
-
-            var KEYS;
-            var SELECTING_KEY_ARRAY;
-            var SELECTING_KEY_ARRAY_LENGTH;
-            var rowIndex;
-
-            if (!verifyJQuery() || !verifyGrid()) return;
-            if (null == Utility.grid.selectingKeys[identifier]) return;
-
-            // keys = $.map(grid.getList(), function(detail) {return detail[key];});
-            SELECTING_KEY_ARRAY = Utility.grid.selectingKeys[identifier];
-            SELECTING_KEY_ARRAY_LENGTH = SELECTING_KEY_ARRAY.length;
-
-            for (var index = 0; index < SELECTING_KEY_ARRAY_LENGTH; index++) {
-
-                rowIndex = $.inArray(SELECTING_KEY_ARRAY[index], KEYS);
-                // if (0 <= rowIndex) ;
-            }
-
-            Utility.grid.clearSelectingKeyArray(identifier);
-        },
-
-        /**
-         * 행 추가하기
-         * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-         *
-         * 예제) Utility.grid.addRow("grid", ...);
-         *
-         * @param identifier String
-         * @param data JSON
-         */
-        addRow: function(identifier, data) {
-
-            if (!verifyGrid()) return;
-        },
-
-        /**
-         * Data 가져오기
-         * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-         *
-         * 예제) Utility.grid.getData("grid");
-         *
-         * @param identifier String
-         * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
-         * @returns Array
-         */
-        getData: function(identifier, isSelected) {
-
-            if (!verifyGrid()) return [];
-            var IS_SELECTED = Utility.coalesce(isSelected, false);
-        },
-
-        /**
-         * 선택여부
-         * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-         *
-         * 예제) Utility.grid.isSelected("grid");
-         *
-         * @param identifier String
-         * @param index number
-         * @returns {boolean}
-         */
-        isSelected: function(identifier, index) {
-
-            if (!verifyGrid()) return false;
-        },
-
-        /**
-         * Page Offset 가져오기
-         * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-         *
-         * 예제) Utility.grid.getPageOffset("grid");
-         *
-         * @param identifier String
-         * @returns {number}
-         */
-        getPageOffset: function(identifier) {
-
-            if (!verifyGrid()) return -1;
-        },
-
-        /**
-         * has No Data
-         *
-         * 예제) if (Utility.grid.hasNoData("grid", "선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.", true)) return;
-         *
-         * @param identifier String
-         * @param messageIfTrue String
-         * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
-         * @returns {boolean}
-         */
-        hasNoData: function(identifier, messageIfTrue, isSelected) {
-
-            return Utility.isEmptyArray(Utility.grid.getData(identifier, isSelected), messageIfTrue);
+            return null;
         }
     };
 })();

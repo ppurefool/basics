@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid-theme.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.js"></script>
 
-    <!--<script th:src="@{../../js//authorizationserver/utility.grid.js}"></script>&lt;!&ndash; Utility Grid &ndash;&gt;-->
+    <script th:src="@{../../js//authorizationserver/utility.grid.js}"></script><!-- Utility Grid -->
 
     <script th:src="@{../../js/authorizationserver/index.js}"></script><!-- Index -->
     <script th:src="@{../../js/authorizationserver/index-ajax.js}"></script><!-- Index AJAX -->
@@ -59,7 +59,35 @@
 
                         <!-- Grid -->
                         <br />
-                        <div id="jsGrid" style="height: 434px;"></div>
+                        <div id="jsGrid" style="height: 380px;"></div>
+
+                        <!-- Page Container -->
+                        <br />
+                        <div id="pageContainer">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="input-group" style="line-height: 30px">
+                                        <i class="fa fa-slack"></i> Showing <span>1</span> to <span>10</span> of <span>57</span> entries
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="input-group" style="text-align: right;">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" title="First" disabled="disabled" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px"><i class="fa fa-step-backward"></i></button>
+                                            <button class="btn btn-default" type="button" title="Previous" disabled="disabled"><i class="fa fa-caret-left"></i></button>
+                                            <button class="btn btn-primary" type="button" disabled="disabled">1</button>
+                                            <button class="btn btn-default" type="button">2</button>
+                                            <button class="btn btn-default" type="button">3</button>
+                                            <button class="btn btn-default" type="button">4</button>
+                                            <button class="btn btn-default" type="button">5</button>
+                                            <button class="btn btn-default" type="button" title="Next"><i class="fa fa-caret-right"></i></button>
+                                            <button class="btn btn-default" type="button" title="Last" style="border-bottom-right-radius: 5px; border-top-right-radius: 5px"><i class="fa fa-step-forward"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                     <!-- /.panel-body -->
