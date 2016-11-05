@@ -34,7 +34,7 @@
 
             var result = (null == array || 0 >= array.length);
 
-            if (null != messageIfTrue & result) Utility.notification.pushWarning(messageIfTrue);
+            if (null != messageIfTrue && result) Utility.notification.pushWarning(messageIfTrue);
 
             return result;
         },
@@ -533,7 +533,7 @@
          * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
          * @returns Array
          */
-        getData: function(identifier, isSelected) {return [];},
+        getData: function(identifier, isSelected) { return (null != identifier && null != isSelected? []: []);},
 
         /**
          * 선택여부
