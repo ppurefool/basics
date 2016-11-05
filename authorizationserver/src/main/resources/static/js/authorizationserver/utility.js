@@ -308,14 +308,15 @@
          */
         processRequestError: function(jqXHR) {
 
-            // if (403 == jqXHR.status) {
+            // Invalid CSRF Token ... was found on the request parameter '_csrf' or header 'X-CSRF-TOKEN'.
+            if (403 == jqXHR.status) { // 403. forbidden
 
-                // Utility.notification.pushWarning("로그아웃되어 요청할 수 없습니다. 다시 로그인해주세요.");
-                // window.open("/log-in-view", "loginInView", "width=300, height=400"); // TODO 로그인 완료 후 닫기 처리
-            // } else {
+                alert("새로고침이 필요합니다. 다시 요청하겠습니다.\n\n" + JSON.stringify(jqXHR));
+                location.href = "/";
+            } else {
 
                 alert("요청 결과 오류가 발생했습니다. 관리자에게 문의해주세요.\n\n" + JSON.stringify(jqXHR));
-            // }
+            }
         }
     };
 

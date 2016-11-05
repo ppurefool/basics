@@ -26,7 +26,7 @@ var DataRequest = {
 var DataResponse = {
 
     success: function(result, statusText, jqXHR) {
-alert(JSON.stringify(jqXHR));
+
         var ERROR = Utility.json.getValue(result, "error");
 
         if (-1 == ERROR) {
