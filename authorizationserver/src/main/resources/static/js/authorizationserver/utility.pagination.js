@@ -94,7 +94,7 @@
             thisA.text(thisPageNumber);
 
             if (TOTAL_PAGE >= thisPageNumber) {
-                thisLi.removeClass("disabled")
+                thisLi.removeClass("disabled");
 
                 if ((PAGE + 1) == thisPageNumber) thisLi.addClass("active");
                 else thisA.css("cursor", "pointer");
