@@ -7,9 +7,13 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.css" /><!-- jsGrid -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid-theme.min.css" />
+    <style>
+        div.grid th {text-align: center;}
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.js"></script>
 
     <script th:src="@{../../js//authorizationserver/utility.grid.js}"></script><!-- Utility Grid -->
+    <script th:src="@{../../js//authorizationserver/utility.pagination.js}"></script><!-- Utility Pagination -->
 
     <script th:src="@{../../js/authorizationserver/index.js}"></script><!-- Index -->
     <script th:src="@{../../js/authorizationserver/index-ajax.js}"></script><!-- Index AJAX -->
@@ -59,32 +63,25 @@
 
                         <!-- Grid -->
                         <br />
-                        <div id="jsGrid" style="height: 380px;"></div>
-
-                        <!-- Page Container -->
-                        <br />
-                        <div id="pageContainer">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="input-group" style="line-height: 30px">
-                                        <i class="fa fa-slack"></i> Showing <span>1</span> to <span>10</span> of <span>57</span> entries
-                                    </div>
+                        <div id="jsGrid" class="grid" style="height: 399px;"></div>
+                        <!-- Grid Pagination -->
+                        <div class="row" id="jsGrid-pagination"><!-- id = (Grid Identifier) + "-pagination" -->
+                            <div class="col-lg-12">
+                                <div class="pull-left">
+                                    <h5 style="text-indent: 5px;"><!-- Showing 1 to 10 of 57 entries --></h5>
                                 </div>
-
-                                <div class="col-lg-6">
-                                    <div class="input-group" style="text-align: right;">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" title="First" disabled="disabled" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px"><i class="fa fa-step-backward"></i></button>
-                                            <button class="btn btn-default" type="button" title="Previous" disabled="disabled"><i class="fa fa-caret-left"></i></button>
-                                            <button class="btn btn-primary" type="button" disabled="disabled">1</button>
-                                            <button class="btn btn-default" type="button">2</button>
-                                            <button class="btn btn-default" type="button">3</button>
-                                            <button class="btn btn-default" type="button">4</button>
-                                            <button class="btn btn-default" type="button">5</button>
-                                            <button class="btn btn-default" type="button" title="Next"><i class="fa fa-caret-right"></i></button>
-                                            <button class="btn btn-default" type="button" title="Last" style="border-bottom-right-radius: 5px; border-top-right-radius: 5px"><i class="fa fa-step-forward"></i></button>
-                                        </span>
-                                    </div>
+                                <div class="pull-right" style="height: 35px">
+                                    <ul class="pagination pagination-sm" style="margin-top: 3px;">
+                                        <li><a style="cursor: not-allowed;" title="First"><i class="fa fa-step-backward"></i></a></li>
+                                        <li><a style="cursor: not-allowed;" title="Previous"><i class="fa fa-caret-left"></i></a></li>
+                                        <li><a style="cursor: not-allowed;">1</a></li>
+                                        <li><a style="cursor: not-allowed;">2</a></li>
+                                        <li><a style="cursor: not-allowed;">3</a></li>
+                                        <li><a style="cursor: not-allowed;">4</a></li>
+                                        <li><a style="cursor: not-allowed;">5</a></li>
+                                        <li><a style="cursor: not-allowed;" title="Next"><i class="fa fa-caret-right"></i></a></li>
+                                        <li><a style="cursor: not-allowed;" title="Last"><i class="fa fa-step-forward"></i></a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

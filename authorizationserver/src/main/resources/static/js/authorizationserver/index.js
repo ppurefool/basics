@@ -34,10 +34,14 @@ var GridSetting = {
                 {name: "number", title: "번호", visible: false},
                 {name: "typeName", title: "로그인 유형", width: 120},
                 {name: "errorName", title: "오류", width: 120},
-                {name: "address", title: "IP 주소", width: 120},
-                {name: "registrationDate", title: "로그인/아웃 일시", width: 170, align: "right", itemTemplate: Utility.grid.dateItemTemplate},
-                {name: "registrationUserEmail", title: "사용자 E-mail", width: 230}
-            ]
+                {name: "address", title: "IP 주소", width: 200},
+                {name: "registrationDate", title: "로그인/아웃 일시", width: 160, align: "center", itemTemplate: Utility.grid.itemTemplate.date},
+                {name: "registrationUserEmail", title: "사용자 E-mail", width: 240}
+            ],
+            onPageClick: function(pageOffset) {
+
+                DataRequest.inquiry(pageOffset);
+            }
             //
             // columns: [ // 컬럼 목록 설정 // key. Data 바인딩시 Mapping 할 field 이름
             //     {key: "number", label: "번호", width: 0},
