@@ -1,4 +1,4 @@
-package io.kwangsik.ui.authorizationserver.index;
+package io.kwangsik.ui.authorizationserver.login;
 
 import io.kwangsik.application.authorizationserver.login.LoginService;
 import io.kwangsik.commonness.authorizationserver.dto.PageRequest;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
  * Index REST Controller
  */
 @RestController // Sprint Web REST Controller Class 인 경우 작성한다.
-public class IndexRESTController {
+public class LoginRESTController {
 
     private final LoginService service;
 
     @Autowired
-    public IndexRESTController(final LoginService service) { // Constructor 추가시 public 으로 작성한다.
+    public LoginRESTController(final LoginService service) { // Constructor 추가시 public 으로 작성한다.
 
         this.service = service;
     }

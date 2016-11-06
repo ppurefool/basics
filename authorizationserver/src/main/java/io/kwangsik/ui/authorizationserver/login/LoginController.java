@@ -1,4 +1,4 @@
-package io.kwangsik.ui.authorizationserver.index;
+package io.kwangsik.ui.authorizationserver.login;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Index Controller
  */
 @Controller // Spring Web Controller Class 인 경우 작성한다.
-public class IndexController {
+public class LoginController {
 
     /**
      * 로그인 ModelAndView 가져오기
