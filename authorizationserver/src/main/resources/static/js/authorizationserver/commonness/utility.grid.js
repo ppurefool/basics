@@ -1,6 +1,6 @@
 /**
- * Utility Grid - jsGrid
- * 참고) jsgrid.min.css, jsgrid-theme.min.css, jsgrid.min.js 등의 File 을 Include 해야한다.
+ * Utility Grid - handsontable
+ * 참고) handsontable.full.min.css, handsontable.full.min.js 등의 File 을 Include 해야한다.
  *
  * @author Kwangsik You
  */
@@ -22,126 +22,43 @@
      */
     Utility.grid.initialize = function(identifier, configuration) {
 
-        if (null == window["jsGrid"]) {
+        // if (null == Utility["pagination"]) {
+        //
+        //     alert("utility.pagination.js 등의 File 이 누락되었습니다. 관리자에게 문의하십시오.");
+        // } else {
+        {
+            var PAGINATION_ON_CLICK = Utility.json.getValue(configuration, "pagination.onClick");
 
-            alert("jsGrid 관련 File 들이 누락되었습니다. 관리자에게 문의하십시오. : jsGrid is null!");
-        } else {
+            Utility.grid.self = {};
+            Utility.grid.self[identifier] = new Handsontable(document.getElementById(identifier),
+                $.extend(true, configuration, {
+                    columnHeaderHeight: 30,
+                    columnSorting: true,
+                    data: [],
+                    multiSelect: false,
+                    afterOnCellMouseDown: function(event, coords) {
 
-            var HEIGHT_NAME = "height";
-            var HEIGHT = $("#jsGrid").css(HEIGHT_NAME);
-            var paginationOnClick = Utility.json.getValue(configuration, "pagination.onClick");
-            if (null == configuration[HEIGHT_NAME] && "0px" != HEIGHT) configuration[HEIGHT_NAME] = HEIGHT;
+                        var columnIndex = coords.col;
 
-            $("#" + identifier).jsGrid($.extend(true, {
-                // fields: [
-                //     {
-                //         type: "",
-                //         name: "",
-                //         title: "",
-                //         align: "",
-                //         width: 100,
-                //         visible: true,
-                //
-                //         css: "",
-                //         headercss: "",
-                //         filtercss: "",
-                //         insertcss: "",
-                //         editcss: "",
-                //
-                //         filtering: true,
-                //         inserting: true,
-                //         editing: true,
-                //         sorting: true,
-                //         sorter: "string",
-                //
-                //         headerTemplate: function() { ... },
-                //         itemTemplate: function(value, item) { ... },
-                //         filterTemplate: function() { ... },
-                //         insertTemplate: function() { ... },
-                //         editTemplate: function(value, item) { ... },
-                //
-                //         filterValue: function() { ... },
-                //         insertValue: function() { ... },
-                //         editValue: function() { ... },
-                //
-                //         cellRenderer: null,
-                //
-                //         validate: null
-                //     }
-                // ],
-                // data: [],
-                //
-                // autoload: false,
-                // controller: {
-                //     loadData: $.noop,
-                //     insertItem: $.noop,
-                //     updateItem: $.noop,
-                //     deleteItem: $.noop
-                // },
-                //
-                width: "100%",// width: "auto", // TODO
-                // height: "auto",
-                //
-                // heading: true,
-                // filtering: false,
-                // inserting: false,
-                editing: true,// editing: false,
-                // selecting: true,
-                sorting: true,// sorting: false,
-                // paging: false,
-                // pageLoading: false,
-                //
-                // rowClass: function(item, itemIndex) { ... },
-                rowClick: function(args) {// rowClick: function(args) { ... },
-                    var $target = $(args.event.target);
+                        if ("__selected__" == configuration.columns[columnIndex].data) {
 
-                    if($target.closest(".your-field-css-class").length) {
-                        // handle cell click
-                    }
-
-                    // otherwise handle row click
-                    if(this.editing) {
-                        this.editItem($target.closest("tr"));
-                    }
-                },
-                // rowDoubleClick: function(args) { ... },
-                //
-                noDataContent: "조회 결과가 존재하지 않습니다.",// noDataContent: "Not found",
-                //
-                // confirmDeleting: true,
-                // deleteConfirm: "Are you sure?",
-                //
-                // pagerContainer: null,
-                // pageIndex: 1,
-                // pageSize: 20,
-                // pageButtonCount: 15,
-                // pagerFormat: "Pages: {first} {prev} {pages} {next} {last}    {pageIndex} of {pageCount}",
-                // pagePrevText: "Prev",
-                // pageNextText: "Next",
-                // pageFirstText: "First",
-                // pageLastText: "Last",
-                // pageNavigatorNextText: "...",
-                // pageNavigatorPrevText: "...",
-                //
-                // invalidNotify: function(args) { ... }
-                // invalidMessage: "Invalid data entered!",
-                //
-                // loadIndication: true,
-                // loadIndicationDelay: 500,
-                // loadMessage: "Please, wait...",
-                // loadShading: true,
-                //
-                // updateOnResize: true,
-                //
-                // rowRenderer: null,
-                // headerRowRenderer: null,
-                // filterRowRenderer: null,
-                // insertRowRenderer: null,
-                // editRowRenderer: null
-            }, configuration));
+                            var selectedArray = [];
+                            selectedArray[0] = [0, columnIndex, true];
+                            selectedArray[1] = [1, columnIndex, true];
+                            selectedArray[2] = [2, columnIndex, true];
+                            selectedArray[3] = [3, columnIndex, true];
+                            Utility.grid.self[identifier].setDataAtCell(selectedArray);
+                            return false;
+                        }
+                    },
+                    outsideClickDeselects: false,
+                    sortIndicator: true,
+                    wordWrap: false,
+                    // stretchH: "all"
+                }));
 
             Utility.pagination.initialize(identifier, {
-                onClick: (null != paginationOnClick? paginationOnClick: null)
+                onClick: (null != PAGINATION_ON_CLICK? PAGINATION_ON_CLICK: null)
             });
         }
     };
@@ -155,8 +72,6 @@
      * @param identifier String
      */
     Utility.grid.clear = function(identifier) {
-
-        $("#" + identifier).jsGrid("option", "data", []).jsGrid("reset");
 
         Utility.pagination.clear(identifier);
     };
@@ -172,27 +87,8 @@
      */
     Utility.grid.setData = function(identifier, data) {
 
-        $("#" + identifier).jsGrid("option", "data", data["outputList"]);
+        Utility.grid.self[identifier].loadData(data["outputList"]);
 
         Utility.pagination.set(identifier, data);
-    };
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Custom... 영역
-    // -----------------------------------------------------------------------------------------------------------------
-
-    Utility.grid.itemTemplate = {
-
-        date: function(value) {
-
-            if (null != value) {
-
-                var date = new Date(value);
-                return date.toISOString().substring(0, 10) + " " + date.toTimeString().substring(0, 8);
-            } else {
-
-                return null;
-            }
-        }
     };
 })();

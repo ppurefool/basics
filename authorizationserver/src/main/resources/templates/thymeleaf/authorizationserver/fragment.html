@@ -31,8 +31,15 @@
     <script th:src="@{/vendor/authorizationserver/ax5ui-toast/ax5toast.min.js}"></script><!-- AX5 UI Toast -->
 
     <script th:src="@{../../js/authorizationserver/commonness/utility.js}"></script><!-- Utility -->
-    <!--<script th:src="@{../../js//authorizationserver/commonness/utility.grid.js}"></script>&lt;!&ndash; Utility Grid &ndash;&gt;-->
-    <!--<script th:src="@{../../js//authorizationserver/commonness/utility.pagination.js}"></script>-->
+
+    <link rel="stylesheet" th:href="@{/vendor/authorizationserver/handsontable/handsontable.full.min.css}" /><!-- Handsontable -->
+    <style>
+        div.grid th {vertical-align: middle;}
+        div.grid td {vertical-align: middle;}
+    </style>
+    <script th:src="@{/vendor/authorizationserver/handsontable/handsontable.full.min.js}"></script>
+    <script th:src="@{../../js//authorizationserver/commonness/utility.grid.js}"></script><!-- Utility Grid -->
+    <script th:src="@{../../js//authorizationserver/commonness/utility.pagination.js}"></script>
     <!-- ____________________ head fragment _____ e n d --></head>
 
 <body>

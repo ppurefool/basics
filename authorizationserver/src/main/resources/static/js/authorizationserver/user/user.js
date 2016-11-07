@@ -79,31 +79,14 @@ var GridSetting = {
 
     initialize: function() {
 
-        var gridIdentifier = "jsGrid";
+        var identifier = "grid";
 
-        Utility.grid.initialize(gridIdentifier, {
-            fields: [
-                {
-                    name: "__selected__",
-                    width: 30,
-                    sorting: false,
-                    headerTemplate: function() {
-
-                        return $('<i class="fa fa-check" style="cursor: pointer;"></i>').click(function() {
-
-                            alert(1);
-                        });
-                    },
-                    itemTemplate: function(value, item) {
-
-                        return $('<input type="checkbox" />').prop("checked", value).click(function() {
-
-                            item["__selected__"] = !Utility.coalesce(item["__selected__"], false);
-                        });
-                    }
-                },
-                {name: "email", title: "사용자 E-mail", width: 525, type: "text"},
-                {name: "name", title: "사용자 이름", width: 300, type: "text"}
+        Utility.grid.initialize(identifier, {
+            colHeaders: ['<i class="fa fa-check"></i>', "사용자 E-mail", "사용자 이름"],
+            columns: [
+                {data: "__selected__", width: 30, type: "checkbox", className: "htCenter"},
+                {data: "email", width: 520},
+                {data: "name", width: 300}
             ],
             pagination: {
                 onClick: function(pageOffset) {

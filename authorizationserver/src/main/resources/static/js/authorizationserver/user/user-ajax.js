@@ -10,7 +10,7 @@ var DataRequest = {
 
         return $.map(
             $.grep(
-                Utility.grid.getData("jsGrid", true),
+                Utility.grid.getData("grid", true),
                 function(detail) {return (!Utility.json.isEmpty(detail, "email"));}
             ),
             function(detail) {return detail.email}
@@ -19,7 +19,7 @@ var DataRequest = {
 
     inquiry: function(page) {
 
-        Utility.grid.clear("jsGrid");
+        Utility.grid.clear("grid");
 
         Utility.ajax.request({
             url: "/membership/users", // 회원 // 사용자 목록
@@ -37,7 +37,7 @@ var DataRequest = {
         Utility.ajax.request({
             url: "/membership/users", // 회원 // 사용자 목록
             type: "post", // 등록
-            data: Utility.grid.getData("jsGrid", true),
+            data: Utility.grid.getData("grid", true),
             success: DataResponse.processSavingSuccess
         });
     },
@@ -62,8 +62,8 @@ var DataResponse = {
 
         if (200 == STATUS) { // 200. success
 
-            Utility.grid.setData("jsGrid", result);
-            Utility.grid.select("jsGrid", "email");
+            Utility.grid.setData("grid", result);
+            Utility.grid.select("grid", "email");
         } else {
 
             Utility.ajax.processResponseError(jqXHR, STATUS, "조회 결과가 존재하지 않습니다.");
@@ -77,9 +77,9 @@ var DataResponse = {
         if (200 == STATUS) { // 200. success
 
             Utility.notification.pushInformation("저장이 완료되었습니다.");
-            Utility.grid.setSelectingKeyArray("jsGrid", $.map(result, function(detail) {return detail.email}));
+            Utility.grid.setSelectingKeyArray("grid", $.map(result, function(detail) {return detail.email}));
 
-            DataRequest.inquiry(Utility.grid.getPageOffset("jsGrid"));
+            DataRequest.inquiry(Utility.grid.getPageOffset("grid"));
         } else {
 
             Utility.ajax.processResponseError(jqXHR, STATUS, "저장할 데이터가 존재하지 않습니다.");

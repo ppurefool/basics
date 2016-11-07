@@ -21,41 +21,47 @@
      */
     initialize: function(identifier, configuration) {
 
-        Utility.pagination.self[identifier] = {
+        if (0 >= $('#' + identifier + '-pagination').length) {
 
-            entries: $('#' + identifier + '-pagination>div>div.pull-left>h5'),
-            pages: $('#' + identifier + '-pagination>div>div.pull-right>ul>li'),
-            pageOnClick: function() {
+            alert('화면 Page 에 <div id="' + identifier + '-pagination">...</div> 태그가 존재하지 않습니다. 다시 확인해주세요.');
+        } else {
 
-                var pageOffset;
-                var index;
+            Utility.pagination.self[identifier] = {
 
-                if ("not-allowed" == $(this).css("cursor")) return;
+                entries: $('#' + identifier + '-pagination>div>div.pull-left>h5'),
+                pages: $('#' + identifier + '-pagination>div>div.pull-right>ul>li'),
+                pageOnClick: function () {
 
-                index = $(this).parent().index();
+                    var pageOffset;
+                    var index;
 
-                if (0 == index) { // First
+                    if ("not-allowed" == $(this).css("cursor")) return;
 
-                    pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(2).text()) - 1;
-                } else if (1 == index) { // Previous
+                    index = $(this).parent().index();
 
-                    pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').prev().find('a').text()) - 1;
-                } else if (7 == index) { // Next
+                    if (0 == index) { // First
 
-                    pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').next().find('a').text()) - 1;
-                } else if (8 == index) { // Last
+                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(2).text()) - 1;
+                    } else if (1 == index) { // Previous
 
-                    pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('li:not([class~="disabled"])>a:not([title]):last').text()) - 1;
-                } else { // Page
+                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').prev().find('a').text()) - 1;
+                    } else if (7 == index) { // Next
 
-                    pageOffset = parseInt($(this).text()) - 1;
+                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').next().find('a').text()) - 1;
+                    } else if (8 == index) { // Last
+
+                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('li:not([class~="disabled"])>a:not([title]):last').text()) - 1;
+                    } else { // Page
+
+                        pageOffset = parseInt($(this).text()) - 1;
+                    }
+
+                    if (null != configuration && null != configuration["onClick"]) configuration["onClick"](pageOffset);
                 }
+            };
 
-                if (null != configuration && null != configuration["onClick"]) configuration["onClick"](pageOffset);
-            }
-        };
-
-        Utility.pagination.self[identifier].pages.find('a').click(Utility.pagination.self[identifier].pageOnClick);
+            Utility.pagination.self[identifier].pages.find('a').click(Utility.pagination.self[identifier].pageOnClick);
+        }
     },
 
     clear: function(identifier) {
