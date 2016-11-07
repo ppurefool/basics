@@ -5,16 +5,6 @@
 
     <th:block th:include="thymeleaf/authorizationserver/fragment :: head" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.css" /><!-- jsGrid -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid-theme.min.css" />
-    <style>
-        div.grid th {text-align: center;}
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.js"></script>
-
-    <script th:src="@{../../js//authorizationserver/commonness/utility.grid.js}"></script><!-- Utility Grid -->
-    <script th:src="@{../../js//authorizationserver/commonness/utility.pagination.js}"></script><!-- Utility Pagination -->
-
     <script th:src="@{../../js/authorizationserver/login/index.js}"></script><!-- Index -->
     <script th:src="@{../../js/authorizationserver/login/index-ajax.js}"></script><!-- Index AJAX -->
 
@@ -63,7 +53,7 @@
 
                         <!-- Grid -->
                         <br />
-                        <div id="jsGrid" class="grid" style="height: 399px;"></div>
+                        <div id="jsGrid" class="grid" style="height: 397px;"></div>
                         <!-- Grid Pagination -->
                         <div class="row" id="jsGrid-pagination"><!-- id = (Grid Identifier) + "-pagination" -->
                             <div class="col-lg-12">

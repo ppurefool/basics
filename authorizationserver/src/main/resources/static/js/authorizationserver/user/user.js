@@ -79,17 +79,36 @@ var GridSetting = {
 
     initialize: function() {
 
-        var gridIdentifier = "firstGrid";
+        var gridIdentifier = "jsGrid";
 
         Utility.grid.initialize(gridIdentifier, {
-            columns: [
-                {key: "email", label: "사용자 E-mail", width: 500, editor: {type: "text"}},
-                {key: "name", label: "사용자 이름", width: 284, editor: {type: "text"}}
-            ],
-            page: {
-                onChange: function() {
+            fields: [
+                {
+                    name: "__selected__",
+                    width: 30,
+                    sorting: false,
+                    headerTemplate: function() {
 
-                    DataRequest.inquiry(this.page.selectPage);
+                        return $('<i class="fa fa-check" style="cursor: pointer;"></i>').click(function() {
+
+                            alert(1);
+                        });
+                    },
+                    itemTemplate: function(value, item) {
+
+                        return $('<input type="checkbox" />').prop("checked", value).click(function() {
+
+                            item["__selected__"] = !Utility.coalesce(item["__selected__"], false);
+                        });
+                    }
+                },
+                {name: "email", title: "사용자 E-mail", width: 525, type: "text"},
+                {name: "name", title: "사용자 이름", width: 300, type: "text"}
+            ],
+            pagination: {
+                onClick: function(pageOffset) {
+
+                    DataRequest.inquiry(pageOffset);
                 }
             }
         });

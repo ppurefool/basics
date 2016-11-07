@@ -29,6 +29,7 @@
 
             var HEIGHT_NAME = "height";
             var HEIGHT = $("#jsGrid").css(HEIGHT_NAME);
+            var paginationOnClick = Utility.json.getValue(configuration, "pagination.onClick");
             if (null == configuration[HEIGHT_NAME] && "0px" != HEIGHT) configuration[HEIGHT_NAME] = HEIGHT;
 
             $("#" + identifier).jsGrid($.extend(true, {
@@ -70,7 +71,7 @@
                 // ],
                 // data: [],
                 //
-                autoload: true,// autoload: false,
+                // autoload: false,
                 // controller: {
                 //     loadData: $.noop,
                 //     insertItem: $.noop,
@@ -84,14 +85,25 @@
                 // heading: true,
                 // filtering: false,
                 // inserting: false,
-                // editing: false,
-                selecting: false,// selecting: true,
+                editing: true,// editing: false,
+                // selecting: true,
                 sorting: true,// sorting: false,
                 // paging: false,
                 // pageLoading: false,
                 //
                 // rowClass: function(item, itemIndex) { ... },
-                // rowClick: function(args) { ... },
+                rowClick: function(args) {// rowClick: function(args) { ... },
+                    var $target = $(args.event.target);
+
+                    if($target.closest(".your-field-css-class").length) {
+                        // handle cell click
+                    }
+
+                    // otherwise handle row click
+                    if(this.editing) {
+                        this.editItem($target.closest("tr"));
+                    }
+                },
                 // rowDoubleClick: function(args) { ... },
                 //
                 noDataContent: "조회 결과가 존재하지 않습니다.",// noDataContent: "Not found",
@@ -129,7 +141,7 @@
             }, configuration));
 
             Utility.pagination.initialize(identifier, {
-                onClick: (null != configuration["onPageClick"]? configuration["onPageClick"]: null)
+                onClick: (null != paginationOnClick? paginationOnClick: null)
             });
         }
     };
@@ -144,7 +156,7 @@
      */
     Utility.grid.clear = function(identifier) {
 
-        $("#" + identifier).jsGrid("option", "data", []);
+        $("#" + identifier).jsGrid("option", "data", []).jsGrid("reset");
 
         Utility.pagination.clear(identifier);
     };
