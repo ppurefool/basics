@@ -40,7 +40,7 @@ Role
 
 ### TODO
 
-grid 공통함수 작성 - SlickGrid
+grid 공통함수 작성 - jsGrid
 
 필수입력항목 표시
 
