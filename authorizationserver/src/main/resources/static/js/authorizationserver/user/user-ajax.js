@@ -11,7 +11,7 @@ var DataRequest = {
         return $.map(
             $.grep(
                 Utility.grid.getData("grid", true),
-                function(detail) {return (!Utility.json.isEmpty(detail, "email"));}
+                function(detail) {return (!Utility.json.isEmptyValue(detail, "email"));}
             ),
             function(detail) {return detail.email}
         );
@@ -25,8 +25,8 @@ var DataRequest = {
             url: "/membership/users", // 회원 // 사용자 목록
             type: "get", // 조회
             data: Utility.json.serialize($("#condition"), {
-                page: page
-                // size: 15
+                page: page,
+                size: 15
             }),
             success: DataResponse.processInquirySuccess
         });
@@ -77,7 +77,7 @@ var DataResponse = {
         if (200 == STATUS) { // 200. success
 
             Utility.notification.pushInformation("저장이 완료되었습니다.");
-            Utility.grid.setSelectingKeyArray("grid", $.map(result, function(detail) {return detail.email}));
+            Utility.grid.setSelectingKeyArray("grid", result);
 
             DataRequest.inquiry(Utility.grid.getPageOffset("grid"));
         } else {

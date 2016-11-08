@@ -159,8 +159,8 @@
         /**
          * Null 값여부
          *
-         * 예제) true == Utility.isEmptyValue(null)
-         *      true == Utility.isEmptyValue("")
+         * 예제) true == Utility.json.isEmptyValue(null)
+         *      true == Utility.json.isEmptyValue("")
          *
          * @param cause JSON
          * @param keys String (필수)
@@ -170,7 +170,7 @@
         isEmptyValue: function(cause, keys, messageIfTrue) {
 
             var VALUE = Utility.json.getValue(cause, keys);
-            var result = Utility.json.isEmptyString(VALUE);
+            var result = Utility.isEmptyString(VALUE);
 
             if (null != messageIfTrue && result)
                 Utility.notification.pushWarning((index + 1) + " 번째 행의 사용자 E-mail 항목값이 존재하지 않습니다. 사용자 E-mail 항목을 입력하십시오.");
@@ -537,7 +537,7 @@
          * 선택여부
          * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
          *
-         * 예제) Utility.grid.isSelected("grid");
+         * 예제) Utility.grid.isSelected("grid", 0);
          *
          * @param identifier String
          * @param index number

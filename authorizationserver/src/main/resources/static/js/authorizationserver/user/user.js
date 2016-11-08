@@ -23,7 +23,7 @@ var ScreenEvent = {
 
     clickAdditionButton: function() {
 
-        Utility.grid.addRow("firstGrid");
+        Utility.grid.addRow("grid");
     },
 
     clickSavingButton: function() {
@@ -46,7 +46,7 @@ var ScreenVerification = {
 
     verifySavingData: function() {
 
-        var gridIdentifier = "firstGrid";
+        var gridIdentifier = "grid";
         var list;
         var length;
 

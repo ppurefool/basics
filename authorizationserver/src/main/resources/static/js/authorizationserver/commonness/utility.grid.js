@@ -12,14 +12,6 @@
     // Utility Grid 영역
     // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * 초기화하기
-     *
-     * 예제) Utility.grid.initialize("grid", ...);
-     *
-     * @param identifier String
-     * @param configuration JSON
-     */
     Utility.grid.initialize = function(identifier, configuration) {
 
         // if (null == Utility["pagination"]) {
@@ -32,30 +24,59 @@
             Utility.grid.self = {};
             Utility.grid.self[identifier] = new Handsontable(document.getElementById(identifier),
                 $.extend(true, configuration, {
-                    columnHeaderHeight: 30,
-                    columnSorting: true,
-                    data: [],
-                    multiSelect: false,
+                    afterChange: function(changes, source) {
+
+                        var length;
+                        var grid;
+
+                        if ("edit" != source && "autofill" != source) return;
+                        if ("__selected__" == changes[0][1]) return;
+
+                        length = changes.length;
+                        grid = Utility.grid.self[identifier];
+                        for (var index = 0; index < length; index++) {
+
+                            if (changes[index][2] == changes[index][3]) return;
+                            grid.setDataAtRowProp(changes[index][0], "__selected__", true);
+                        }
+                    },
                     afterOnCellMouseDown: function(event, coords) {
 
                         var columnIndex = coords.col;
+                        var grid;
+                        var value;
+                        var count;
+                        var data;
 
-                        if ("__selected__" == configuration.columns[columnIndex].data) {
+                        if ("__selected__" != configuration.columns[columnIndex].data || 0 <= coords.row) return;
 
-                            var selectedArray = [];
-                            selectedArray[0] = [0, columnIndex, true];
-                            selectedArray[1] = [1, columnIndex, true];
-                            selectedArray[2] = [2, columnIndex, true];
-                            selectedArray[3] = [3, columnIndex, true];
-                            Utility.grid.self[identifier].setDataAtCell(selectedArray);
-                            return false;
+                        grid = Utility.grid.self[identifier];
+                        value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(columnIndex)));
+                        count = grid.countSourceRows();
+                        data = [];
+                        for (var index = 0; index < count; index++) {
+
+                            data[index] = [index, columnIndex, value];
                         }
+                        grid.setDataAtCell(data);
+
+                        return false;
                     },
+                    columnHeaderHeight: 30,
+                    columnSorting: true,
+                    data: [],
+                    fillHandle: {
+                        autoInsertRow: false,
+                        direction: "vertical"
+                    },
+                    multiSelect: false,
                     outsideClickDeselects: false,
                     sortIndicator: true,
-                    wordWrap: false,
-                    // stretchH: "all"
+                    stretchH: "all",
+                    wordWrap: false
                 }));
+
+            Utility.grid.selectingKeys[identifier] = null;
 
             Utility.pagination.initialize(identifier, {
                 onClick: (null != PAGINATION_ON_CLICK? PAGINATION_ON_CLICK: null)
@@ -63,32 +84,69 @@
         }
     };
 
-    /**
-     * 정리하기
-     * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-     *
-     * 예제) Utility.grid.clear("grid");
-     *
-     * @param identifier String
-     */
     Utility.grid.clear = function(identifier) {
+
+        Utility.grid.self[identifier].loadData([]);
 
         Utility.pagination.clear(identifier);
     };
 
-    /**
-     * Data 설정
-     * 참고) 해당 Grid 의 javascript file 을 include 해야한다.
-     *
-     * 예제) Utility.grid.setData("grid", ...);
-     *
-     * @param identifier String
-     * @param data JSON
-     */
     Utility.grid.setData = function(identifier, data) {
 
         Utility.grid.self[identifier].loadData(data["outputList"]);
 
+        Utility.pagination.setEntriesText(identifier, data);
         Utility.pagination.set(identifier, data);
+    };
+
+    Utility.grid.select = function(identifier, key) {
+
+        var selectingKeys = Utility.grid.selectingKeys[identifier];
+        var grid;
+        var keys;
+        var length;
+        var rowIndex;
+
+        if (null == selectingKeys) return;
+        grid = Utility.grid.self[identifier];
+        keys = grid.getDataAtProp(key);
+        length = selectingKeys.length;
+
+        for (var index = 0; index < length; index++) {
+
+            rowIndex = $.inArray(selectingKeys[index], keys);
+            if (0 <= rowIndex) grid.setDataAtRowProp(rowIndex, "__selected__", true);
+        }
+
+        Utility.grid.clearSelectingKeyArray(identifier);
+    };
+
+    Utility.grid.addRow = function(identifier, data) {
+
+        Utility.grid.self[identifier].getSourceData().push($.extend(true, {}, data));
+
+        Utility.pagination.addRow(identifier);
+    };
+
+    Utility.grid.getData = function(identifier, isSelected) {
+
+        var result = Utility.grid.self[identifier].getSourceData();
+
+        if (isSelected) {
+
+            result = $.grep(result, function(detail) {return detail.__selected__;});
+        }
+
+        return result;
+    };
+
+    Utility.grid.isSelected = function(identifier, index) {
+
+        return Utility.grid.self[identifier].getSourceDataAtRow(index)["__selected__"];
+    };
+
+    Utility.grid.getPageOffset = function(identifier) {
+
+        return Utility.pagination.getPageOffset(identifier);
     };
 })();

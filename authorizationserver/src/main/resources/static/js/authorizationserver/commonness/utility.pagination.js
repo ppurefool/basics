@@ -11,6 +11,7 @@
 (function() {Utility["pagination"] = {
 
     self: {}, // Utility.pagination.initialize() 호출시 재설정한다.
+    totalPage: {},
 
     /**
      * 초기화하기
@@ -41,24 +42,28 @@
 
                     if (0 == index) { // First
 
-                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(2).text()) - 1;
+                        pageOffset = 0;
                     } else if (1 == index) { // Previous
 
-                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').prev().find('a').text()) - 1;
+                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').find('a').text()) - 2;
                     } else if (7 == index) { // Next
 
-                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').next().find('a').text()) - 1;
+                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]').find('a').text());
                     } else if (8 == index) { // Last
 
-                        pageOffset = parseInt(Utility.pagination.self[identifier].pages.eq(0).parent().find('li:not([class~="disabled"])>a:not([title]):last').text()) - 1;
+                        pageOffset = Utility.pagination.totalPage[identifier] - 1;
                     } else { // Page
 
                         pageOffset = parseInt($(this).text()) - 1;
                     }
 
+                    Utility.pagination.self[identifier].pages.removeClass("active");
+
                     if (null != configuration && null != configuration["onClick"]) configuration["onClick"](pageOffset);
                 }
             };
+
+            Utility.pagination.totalPage[identifier] = null;
 
             Utility.pagination.self[identifier].pages.find('a').click(Utility.pagination.self[identifier].pageOnClick);
         }
@@ -68,26 +73,27 @@
 
         Utility.pagination.self[identifier].entries.text("");
         Utility.pagination.self[identifier].pages.addClass("disabled").find('a').css("cursor", "not-allowed");
+
+        // Page Number 를 설정한다.
+        for (var index = 2; index < 7; index++) {
+
+            Utility.pagination.self[identifier].pages.eq(index).find('a').text(index - 1);
+        }
+
+        Utility.pagination.totalPage[identifier] = null;
     },
 
     set: function(identifier, data) {
 
         var PAGE = data["page"];
-        var SIZE = data["size"];
-        var NUMBER_OF_ELEMENTS = data["numberOfElements"];
         var TOTAL_PAGE = data["totalPage"];
 
-        var START = PAGE * SIZE + 1;
-        var END = (data["last"]? NUMBER_OF_ELEMENTS: (PAGE + 1) * data["size"]);
-        var PAGE_NUMBER = parseInt((TOTAL_PAGE - 1) / 5) * 5;
+        var PAGE_NUMBER = parseInt(PAGE / 5) * 5;
 
         var thisPageNumber;
         var thisLi;
         var thisA;
         // first=true, last=true, numberOfElements=1, totalElements=1, totalPage=1, page=0, size=10
-
-        // 건수를 설정한다.
-        Utility.pagination.self[identifier].entries.text("Showing " + START + " to " + END + " of " + NUMBER_OF_ELEMENTS + " entries");
 
         // Page Number 를 설정한다.
         for (var index = 2; index < 7; index++) {
@@ -118,5 +124,35 @@
             Utility.pagination.self[identifier].pages.eq(7).removeClass("disabled").find('a').css("cursor", "pointer");
             Utility.pagination.self[identifier].pages.eq(8).removeClass("disabled").find('a').css("cursor", "pointer");
         }
+
+        Utility.pagination.totalPage[identifier] = TOTAL_PAGE;
+    },
+
+    getPageOffset: function(identifier) {
+
+        var result = Utility.pagination.self[identifier].pages.eq(0).parent().find('[class~="active"]>a').text();
+        return (null != result? parseInt(result) - 1: null);
+    },
+
+    setEntriesText: function(identifier, data) {
+
+        var PAGE = data["page"];
+        var SIZE = data["size"];
+        var TOTAL_ELEMENTS = data["totalElements"];
+
+        var START = PAGE * SIZE + 1;
+        var END = (data["last"]? TOTAL_ELEMENTS: (PAGE + 1) * data["size"]);
+
+        Utility.pagination.self[identifier].entries.text("Showing " + START + " to " + END + " of " + TOTAL_ELEMENTS + " entries");
+    },
+
+    addRow: function(identifier) {
+
+        var START_TEXT_ARRAY = Utility.pagination.self[identifier].entries.text().split(" to ");
+        var END_TEXT_ARRAY = START_TEXT_ARRAY[1].split(" of ");
+        var TOTAL_ELEMENTS = END_TEXT_ARRAY[1].split(" entries");
+
+        Utility.pagination.self[identifier].entries.text(
+            START_TEXT_ARRAY[0] + " to " + (parseInt(END_TEXT_ARRAY[0]) + 1) + " of " + (parseInt(TOTAL_ELEMENTS) + 1) + " entries");
     }
 };})();
