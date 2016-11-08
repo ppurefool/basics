@@ -40,12 +40,10 @@ Role
 
 ### TODO
 
-grid 공통함수 작성 - jsGrid
+로그인이력 조회조건 추가 - picker, formatter, 검증로직
 
 필수입력항목 표시
 
 로그인이 안된 경우 요청시 로그인팝업
-
-로그인이력 조회조건 추가 - picker, formatter, 검증로직
 
 Generator 작성 - temp Entity

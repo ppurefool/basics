@@ -5,6 +5,8 @@
 
     <th:block th:include="thymeleaf/authorizationserver/fragment :: head" />
 
+    <script th:src="@{../../js/authorizationserver/commonness/utility.formatter.js}"></script><!-- Utility Formatter -->
+
     <script th:src="@{../../js/authorizationserver/login/index.js}"></script><!-- Index -->
     <script th:src="@{../../js/authorizationserver/login/index-ajax.js}"></script><!-- Index AJAX -->
 
@@ -33,29 +35,27 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">사용자 E-mail</span>
-                                    <input class="form-control" placeholder="E-mail" type="email" name="email" th:value="${#authentication.getName()}" th:disabled="${not #authentication.getPrincipal().hasAdministratorRole()}" />
+                                    <input class="form-control" type="email" name="email" placeholder="E-mail" maxlength="320" th:value="${#authentication.getName()}" th:disabled="${not #authentication.getPrincipal().hasAdministratorRole()}" />
                                 </div>
                             </div>
 
                             <div class="col-md-5">
-                                <div class="input-group">
+                                <div class="input-group" data-ax5picker="picker">
                                     <span class="input-group-addon">등록기간</span>
-                                    <input class="form-control" placeholder="yyyy-mm-dd" type="text" name="startYmd" />
-                                    <span class="input-group-addon" style="border-left: none; border-right: none;">~</span>
-                                    <input class="form-control" placeholder="yyyy-mm-dd" type="text" name="endYmd" />
+                                    <input class="form-control" type="text" name="startYmd" placeholder="" />
+                                    <span class="input-group-addon">~</span>
+                                    <input class="form-control" type="text" name="endYmd" placeholder="" />
                                 </div>
                             </div>
 
-                            <div class="col-lg-1" style="padding-left: 0; text-align: right;">
+                            <div class="col-lg-1 text-right" style="padding-left: 0;">
                                 <button class="btn btn-default" type="button" id="inquiryButton">조회</button>
                             </div>
                         </div>
 
                         <!-- Grid -->
                         <br />
-                        <div class="grid-container" style="height: 397px;">
-                            <div id="grid" class="grid" style=""></div>
-                        </div>
+                        <div class="grid-container" style="height: 397px;"><div id="grid" class="grid"></div></div>
                         <!-- Grid Pagination -->
                         <div class="row" id="grid-pagination"><!-- id = (Grid Identifier) + "-pagination" -->
                             <div class="col-lg-12">
