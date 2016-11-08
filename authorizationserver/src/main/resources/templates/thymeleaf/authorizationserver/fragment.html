@@ -34,8 +34,9 @@
 
     <link rel="stylesheet" th:href="@{/vendor/authorizationserver/handsontable/handsontable.full.min.css}" /><!-- Handsontable -->
     <style>
-        div.grid th {vertical-align: middle;}
-        div.grid td {vertical-align: middle;}
+        div.grid-container {background-color: #eeeeee; overflow: hidden; width: 100%;}
+        div.grid-container div.grid th {vertical-align: middle;}
+        div.grid-container div.grid td {vertical-align: middle;}
     </style>
     <script th:src="@{/vendor/authorizationserver/handsontable/handsontable.full.min.js}"></script>
     <script th:src="@{../../js//authorizationserver/commonness/utility.grid.js}"></script><!-- Utility Grid -->

@@ -20,48 +20,62 @@
         // } else {
         {
             var PAGINATION_ON_CLICK = Utility.json.getValue(configuration, "pagination.onClick");
+            var COLUMNS = "columns";
+            var SELECTED_INDEX = $.inArray("__selected__",
+                $.map(Utility.json.getValue(configuration, COLUMNS), function(detail) {return detail["data"];}));
+
+
+            if (0 <= SELECTED_INDEX) {
+
+                configuration[COLUMNS][SELECTED_INDEX] = $.extend(true, configuration[COLUMNS][SELECTED_INDEX], {
+                    width: 30, type: "checkbox", className: "htCenter"
+                });
+
+                configuration["afterChange"] = function(changes, source) {
+
+                    var SELECTED = "__selected__";
+                    var length;
+                    var grid;
+
+                    if ("edit" != source && "autofill" != source) return;
+                    if (SELECTED == changes[0][1]) return;
+
+                    length = changes.length;
+                    grid = Utility.grid.self[identifier];
+                    for (var index = 0; index < length; index++) {
+
+                        if (changes[index][2] == changes[index][3]) return;
+                        grid.setDataAtRowProp(changes[index][0], SELECTED, true);
+                    }
+                };
+
+                configuration["afterOnCellMouseDown"] = function(event, coords) {
+
+                    var columnIndex = coords.col;
+                    var grid;
+                    var value;
+                    var count;
+                    var data;
+
+                    if ("__selected__" != configuration.columns[columnIndex]["data"] || 0 <= coords.row) return;
+
+                    grid = Utility.grid.self[identifier];
+                    value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(columnIndex)));
+                    count = grid.countSourceRows();
+                    data = [];
+                    for (var index = 0; index < count; index++) {
+
+                        data[index] = [index, columnIndex, value];
+                    }
+                    grid.setDataAtCell(data);
+
+                    return false;
+                };
+            }
 
             Utility.grid.self = {};
             Utility.grid.self[identifier] = new Handsontable(document.getElementById(identifier),
                 $.extend(true, configuration, {
-                    afterChange: function(changes, source) {
-
-                        var length;
-                        var grid;
-
-                        if ("edit" != source && "autofill" != source) return;
-                        if ("__selected__" == changes[0][1]) return;
-
-                        length = changes.length;
-                        grid = Utility.grid.self[identifier];
-                        for (var index = 0; index < length; index++) {
-
-                            if (changes[index][2] == changes[index][3]) return;
-                            grid.setDataAtRowProp(changes[index][0], "__selected__", true);
-                        }
-                    },
-                    afterOnCellMouseDown: function(event, coords) {
-
-                        var columnIndex = coords.col;
-                        var grid;
-                        var value;
-                        var count;
-                        var data;
-
-                        if ("__selected__" != configuration.columns[columnIndex].data || 0 <= coords.row) return;
-
-                        grid = Utility.grid.self[identifier];
-                        value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(columnIndex)));
-                        count = grid.countSourceRows();
-                        data = [];
-                        for (var index = 0; index < count; index++) {
-
-                            data[index] = [index, columnIndex, value];
-                        }
-                        grid.setDataAtCell(data);
-
-                        return false;
-                    },
                     columnHeaderHeight: 30,
                     columnSorting: true,
                     data: [],
@@ -69,6 +83,7 @@
                         autoInsertRow: false,
                         direction: "vertical"
                     },
+                    fixedColumnsLeft: 1,
                     multiSelect: false,
                     outsideClickDeselects: false,
                     sortIndicator: true,

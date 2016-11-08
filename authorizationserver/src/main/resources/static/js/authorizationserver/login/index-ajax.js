@@ -8,7 +8,7 @@ var DataRequest = {
 
     inquiry: function(page) {
 
-        Utility.grid.clear("jsGrid");
+        Utility.grid.clear("grid");
 
         Utility.ajax.request({
             url: "/membership/login", // 회원 로그인 목록
@@ -31,7 +31,7 @@ var DataResponse = {
 
         if (200 == STATUS) { // 200. success
 
-            Utility.grid.setData("jsGrid", result);
+            Utility.grid.setData("grid", result);
         } else {
 
             Utility.ajax.processResponseError(jqXHR, STATUS, "조회 결과가 존재하지 않습니다.");

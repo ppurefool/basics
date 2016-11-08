@@ -84,7 +84,7 @@ var GridSetting = {
         Utility.grid.initialize(identifier, {
             colHeaders: ['<i class="fa fa-check"></i>', "사용자 E-mail", "사용자 이름"],
             columns: [
-                {data: "__selected__", width: 30, type: "checkbox", className: "htCenter"},
+                {data: "__selected__"},
                 {data: "email", width: 520},
                 {data: "name", width: 300}
             ],
