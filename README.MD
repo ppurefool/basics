@@ -40,7 +40,9 @@ Role
 
 ### TODO
 
-로그인이력 조회조건 추가 - picker, formatter, 검증로직
+formatter - period, email, number
+
+로그인이력 조회조건 추가 - picker, 검증로직
 
 필수입력항목 표시
 

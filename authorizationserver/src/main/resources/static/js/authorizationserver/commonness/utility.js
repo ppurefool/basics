@@ -20,6 +20,8 @@
     // -----------------------------------------------------------------------------------------------------------------
     window[selfName] = {
 
+        emptyString: "",
+
         /**
          * Empty String여부
          *
@@ -32,7 +34,7 @@
          */
         isEmptyString: function(cause, messageIfTrue) {
 
-            var result = (null == cause || "" == cause);
+            var result = (null == cause || Utility.emptyString == cause);
             if (null != messageIfTrue && result) Utility.notification.pushWarning(messageIfTrue);
 
             return result;
@@ -67,7 +69,7 @@
          */
         coalesce: function(cause, defaultValue) {
 
-            return (null != cause? cause: (null != defaultValue? defaultValue: ""));
+            return (null != cause? cause: (null != defaultValue? defaultValue: Utility.emptyString));
         },
 
         /**
@@ -201,7 +203,7 @@
          *
          * @param parent jQuery (필수)
          * @param additionData JSON
-         * @param delimiter String
+         * @param delimiter String 참고) null 인 경우 기본값으로 "," 를 사용한다.
          * @returns {JSON}
          */
         serialize: function (parent, additionData, delimiter) {

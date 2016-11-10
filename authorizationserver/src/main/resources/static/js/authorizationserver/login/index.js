@@ -8,7 +8,7 @@
 $(document).ready(function() {
 
     Utility.initialize();
-    Utility.formatter.initializeDate($('[name$="Ymd"]'));
+    Utility.formatter.date.initialize($('[name$="Ymd"]'));
     ScreenSetting.processReadyEvent();
 
     $('#inquiryButton').click();
