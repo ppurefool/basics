@@ -366,10 +366,12 @@
          * 예제) Utility.notification.pushWarning("선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.");
          *
          * @param message String
+         * @param object jQuery
          */
-        pushWarning: function(message) {
+        pushWarning: function(message, object) {
 
             Utility.notification.self.push({icon: '<i class="fa fa-warning" style="color: greenyellow"></i>', msg: message});
+            if (null != object) object.select();
         },
 
         /**

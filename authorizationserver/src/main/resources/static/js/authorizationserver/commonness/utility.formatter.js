@@ -27,7 +27,7 @@
 
                     if (Utility.emptyString != NUMBER_VALUE) {
 
-                        dateArray = Utility.formatter.self.date.minimumDate.split(Utility.emptyString);
+                        dateArray = Utility.formatter.self.date.minimumDateString.split(Utility.emptyString);
                         dateIndex = -1;
                         NUMBER_STRING_ARRAY = NUMBER_VALUE.split(Utility.emptyString);
                         LENGTH = NUMBER_STRING_ARRAY.length;
@@ -45,7 +45,7 @@
 
                     if (VALUE != result) $(this).val(result);
                 },
-                minimumDate: "19700101",
+                minimumDateString: "19700101",
                 splitDateString: function(cause) {
 
                     var result = [];
@@ -65,22 +65,69 @@
 
         isDateString: function(cause) {
 
+            var LENGTH = (null != cause? cause.length: 0);
             var YEAR;
             var MONTH;
             var DAY;
             var MAXIMUM_DAY;
 
-            if (null == cause || 8 != cause.length) return false;
+            if (8 == LENGTH) {
 
-            YEAR = parseInt(cause.substring(0, 4));
-            if (parseInt(Utility.formatter.self.date.minimumDate.substring(0, 4)) > YEAR) return false;
-            MONTH = parseInt(cause.substring(4, 6));
-            if (0 >= MONTH || 12 < MONTH) return false;
-            DAY = parseInt(cause.substring(6, 8));
+                YEAR = parseInt(cause.substring(0, 4));
+                MONTH = parseInt(cause.substring(4, 6));
+                DAY = parseInt(cause.substring(6, 8));
+            } else if (10 == LENGTH) {
+
+                YEAR = parseInt(cause.substring(0, 4));
+                MONTH = parseInt(cause.substring(5, 7));
+                DAY = parseInt(cause.substring(8, 10));
+            } else {
+
+                return false;
+            }
+
+            if (parseInt(Utility.formatter.self.date.minimumDateString.substring(0, 4)) > YEAR) return false;
+            else if (0 >= MONTH || 12 < MONTH) return false;
+
             MAXIMUM_DAY = (2 == MONTH && (0 == YEAR % 4 && 0 != YEAR % 100 || 0 == YEAR % 400)?
                 29: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][MONTH - 1]);
 
             return (0 < DAY && MAXIMUM_DAY >= DAY);
+        },
+
+        verifyPeriodString: function(start, end) {
+
+            var IS_DATE_STRING_START = Utility.formatter.isDateString(start);
+            var IS_DATE_STRING_END = Utility.formatter.isDateString(end);
+            var IS_EMPTY_STRING_START = Utility.isEmptyString(start);
+            var IS_EMPTY_STRING_END = Utility.isEmptyString(end);
+
+            if (IS_EMPTY_STRING_START && IS_EMPTY_STRING_END) return -1;
+            else if (IS_EMPTY_STRING_END) return (IS_DATE_STRING_START? -3: -13);
+            else if (IS_EMPTY_STRING_START) return (IS_DATE_STRING_END? -5: -15);
+            else if (!IS_DATE_STRING_START && !IS_DATE_STRING_END) return -11;
+            else if (!IS_DATE_STRING_START) return -13;
+            else if (!IS_DATE_STRING_END) return -15;
+            else if (start > end) return -11;
+            else return 1;
+        },
+
+        verifyEmail: function(cause) {
+
+            var EMAIL_ARRAY;
+            var ADDRESS_ARRAY;
+
+            if (Utility.isEmptyString(cause)) return -1;
+
+            EMAIL_ARRAY = cause.split("@");
+
+            if (2 != EMAIL_ARRAY.length || Utility.isEmptyString(EMAIL_ARRAY[0])) return -11;
+
+            ADDRESS_ARRAY = EMAIL_ARRAY[1].split(".");
+
+            if (2 != ADDRESS_ARRAY.length || Utility.isEmptyString(ADDRESS_ARRAY[0])) return -13;
+            else if (Utility.isEmptyString(ADDRESS_ARRAY[1])) return -15;
+            else return 1;
         },
 
         clear: function(object) {
@@ -128,6 +175,6 @@
 
                 return result;
             }
-        },
+        }
     };
 })();

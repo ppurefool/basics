@@ -28,10 +28,20 @@ var ScreenVerification = {
     // 검증
     verify: function() {
 
-        if (Utility.jquery.isEmptyVal($('[name="user-email"]'), "E-mail 항목을 입력하십시오.")) return false;
-        if (Utility.jquery.isEmptyVal($('[name="password-hash"]'), "Password 항목을 입력하십시오.")) return false;
+        var OBJECT_EMAIL = $('[name="user-email"]');
+        var VERIFICATION_EMAIL = Utility.formatter.verifyEmail(OBJECT_EMAIL.val());
 
-        return true;
+        if (-10 > VERIFICATION_EMAIL) {
+
+            Utility.notification.pushWarning("E-mail 입력값이 잘못되었습니다. 다시 입력해주세요.", OBJECT_EMAIL);
+            return false;
+        } else if (0 > VERIFICATION_EMAIL) {
+
+            Utility.notification.pushWarning("E-mail 항목을 입력하십시오.", OBJECT_EMAIL);
+            return false;
+        }
+
+        return (!Utility.jquery.isEmptyVal($('[name="password-hash"]'), "Password 항목을 입력하십시오."));
     }
 };
 
