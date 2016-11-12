@@ -41,14 +41,22 @@ public class User
     @Getter
     private String name; // 이름
 
-    public User(final UserDetail cause, final String password) {
+    public User(final User cause, final String password) { // 참고) UserService Class 에서 이용한다.
+
+        this.identifier = new UserIdentifier(cause.getUsername());
+        this.password = password;
+        this.userRoles = (List<UserRole>) cause.getAuthorities();
+        this.name = cause.getName();
+    }
+
+    public User(final UserDetail cause, final String password) { // 참고) UserService Class 에서 이용한다.
 
         this.identifier = new UserIdentifier(cause.getEmail());
         this.password = password;
         this.name = cause.getName();
     }
 
-    public User(final UserDetail cause, final User user) {
+    public User(final UserDetail cause, final User user) { // 참고) UserService Class 에서 이용한다.
 
         this.identifier = new UserIdentifier(cause.getEmail());
         this.password = user.getPassword();

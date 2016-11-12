@@ -21,6 +21,13 @@ var ScreenEvent = {
         DataRequest.inquiry();
     },
 
+    clickPasswordInitiailizationButton: function() {
+
+        if (!ScreenVerification.isVerifiedPasswordInitializationData()) return;
+
+        DataRequest.initializePassword();
+    },
+
     clickAdditionButton: function() {
 
         Utility.grid.addRow("grid");
@@ -28,14 +35,14 @@ var ScreenEvent = {
 
     clickSavingButton: function() {
 
-        if (!ScreenVerification.verifySavingData()) return;
+        if (!ScreenVerification.isVerifiedSavingData()) return;
 
         DataRequest.save();
     },
 
     clickDeletingButton: function() {
 
-        if (!ScreenVerification.verifyDeletingData()) return;
+        if (!ScreenVerification.isVerifiedDeletingData()) return;
 
         DataRequest.delete();
     }
@@ -44,7 +51,12 @@ var ScreenEvent = {
 // 화면 검증
 var ScreenVerification = {
 
-    verifySavingData: function() {
+    isVerifiedPasswordInitializationData: function() {
+
+        return (!Utility.isEmptyArray(DataRequest.getKeys(), "선택된 데이터가 존재하지 않습니다. 비밀번호를 초기화할 그리드 데이터를 선택해주세요."));
+    },
+
+    isVerifiedSavingData: function() {
 
         var gridIdentifier = "grid";
         var list;
@@ -68,9 +80,9 @@ var ScreenVerification = {
         return true;
     },
 
-    verifyDeletingData: function() {
+    isVerifiedDeletingData: function() {
 
-        return (!Utility.isEmptyArray(DataRequest.getDeletingKeys(), "선택된 데이터가 존재하지 않습니다. 삭제할 그리드 데이터를 선택해주세요."));
+        return (!Utility.isEmptyArray(DataRequest.getKeys(), "선택된 데이터가 존재하지 않습니다. 삭제할 그리드 데이터를 선택해주세요."));
     }
 };
 
@@ -112,6 +124,7 @@ var ScreenSetting = {
 
         // 이벤트 핸들러 설정
         $('#inquiryButton').click(ScreenEvent.clickInquiryButton); // 조회 버튼
+        $('#passwordInitializationButton').click(ScreenEvent.clickPasswordInitiailizationButton); // 비밀번호 초기화 버튼
         $('#additionButton').click(ScreenEvent.clickAdditionButton); // 추가 버튼
         $('#savingButton').click(ScreenEvent.clickSavingButton); // 저장 버튼
         $('#deletingButton').click(ScreenEvent.clickDeletingButton); // 삭제 버튼

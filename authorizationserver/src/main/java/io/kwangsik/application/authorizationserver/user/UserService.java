@@ -45,6 +45,21 @@ public class UserService {
     }
 
     @Transactional
+    public List<String> initializeListPassword(final List<String> cause) {
+
+        List<String> result = new ArrayList<>();
+        User user;
+
+        for (String email : cause) {
+
+            user = this.repository.findOne(new UserIdentifier(email));
+            if (null != user) result.add(this.repository.save(new User(user, this.passwordDefaultValue)).getUsername());
+        }
+
+        return result;
+    }
+
+    @Transactional
     public List<String> saveList(final List<UserDetail> cause) {
 
         List<String> result = new ArrayList<>();
@@ -53,7 +68,8 @@ public class UserService {
         for (UserDetail detail : cause) {
 
             user = this.repository.findOne(new UserIdentifier(detail.getEmail()));
-            result.add(this.repository.save(null != user? new User(detail, user): new User(detail, this.passwordDefaultValue)).getUsername());
+            result.add(this.repository.save(null != user?
+                    new User(detail, user): new User(detail, this.passwordDefaultValue)).getUsername());
         }
 
         return result;

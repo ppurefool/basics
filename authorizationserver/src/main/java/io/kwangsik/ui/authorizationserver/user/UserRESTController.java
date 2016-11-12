@@ -45,19 +45,38 @@ public class UserRESTController {
     }
 
     /**
-     * 목록 저장
+     * 목록 비밀번호 초기화하기
+     * @param cause List<String>
+     * @return List<String>
+     */
+    @RequestMapping(value = "/membership/users/password-initialization", method = RequestMethod.PUT)
+    public List<String> initializeListPassword(@RequestBody final List<String> cause) {
+
+        List<String> result;
+
+        if (cause.isEmpty()) throw new NoContentException();
+        result = this.service.initializeListPassword(cause);
+        if (result.isEmpty()) throw new NoContentException();
+
+        return result;
+    }
+
+    /**
+     * 목록 저장하기
      * @param cause List<UserDetail>
      * @return List<String>
      */
     @RequestMapping(value = "/membership/users", method = {RequestMethod.POST, RequestMethod.PUT})
     public List<String> saveList(@RequestBody final List<UserDetail> cause) {
 
+        List<String> result;
+
         if (cause.isEmpty()) throw new NoContentException();
-        return this.service.saveList(cause) ;
+        return this.service.saveList(cause);
     }
 
     /**
-     * 목록 삭제
+     * 목록 삭제하기
      * @param cause List<String>
      */
     @RequestMapping(value = "/membership/users", method = RequestMethod.DELETE)
