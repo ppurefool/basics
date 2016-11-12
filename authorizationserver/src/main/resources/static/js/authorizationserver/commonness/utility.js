@@ -161,21 +161,20 @@
         /**
          * Null 값여부
          *
-         * 예제) true == Utility.json.isEmptyValue(null)
-         *      true == Utility.json.isEmptyValue("")
+         * 예제) true == Utility.json.isEmptyValue(null, "key1", "해당 항목값이 존재하지 않습니다. 해당 항목을 입력해주세요.")
+         *      true == Utility.json.isEmptyValue("", "key1", "해당 항목값이 존재하지 않습니다. 해당 항목을 입력해주세요.")
          *
          * @param cause JSON
          * @param keys String (필수)
-         * @param messageIfTrue String
+         * @param message String
          * @returns {boolean}
          */
-        isEmptyValue: function(cause, keys, messageIfTrue) {
+        isEmptyValue: function(cause, keys, message) {
 
             var VALUE = Utility.json.getValue(cause, keys);
             var result = Utility.isEmptyString(VALUE);
 
-            if (null != messageIfTrue && result)
-                Utility.notification.pushWarning((index + 1) + " 번째 행의 사용자 E-mail 항목값이 존재하지 않습니다. 사용자 E-mail 항목을 입력하십시오.");
+            if (null != message && result) Utility.notification.pushWarning(message);
 
             return result;
         },
