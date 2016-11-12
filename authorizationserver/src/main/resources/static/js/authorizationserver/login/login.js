@@ -16,7 +16,7 @@ var ScreenEvent = {
 
     clickLoginButton: function() {
 
-        if (!ScreenVerification.verify()) return;
+        if (!ScreenVerification.isVerified()) return;
 
         DataRequest.login();
     }
@@ -26,7 +26,7 @@ var ScreenEvent = {
 var ScreenVerification = {
 
     // 검증
-    verify: function() {
+    isVerified: function() {
 
         var OBJECT_EMAIL = $('[name="user-email"]');
         var VERIFICATION_EMAIL = Utility.formatter.verifyEmail(OBJECT_EMAIL.val());

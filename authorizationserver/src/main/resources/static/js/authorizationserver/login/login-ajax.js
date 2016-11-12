@@ -9,12 +9,12 @@ var DataRequest = {
     login: function() {
 
         $.ajax({
+            url: "/log-in", // 로그인
+            type: "post", // 상세 등록
             data: {
                 "user-email": $("input:eq(0)").val(),
                 "password-hash": keccak_512($("input:eq(1)").val())
             },
-            url: "/log-in", // 로그인
-            type: "post", // 상세 등록
             dataType: "json",
             success: DataResponse.success,
             error: Utility.ajax.processRequestError

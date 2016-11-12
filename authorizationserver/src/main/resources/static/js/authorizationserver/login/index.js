@@ -19,7 +19,7 @@ var ScreenEvent = {
 
     clickInquiryButton: function() {
 
-        if (!ScreenVerification.verifyInquiryCondition()) return;
+        if (!ScreenVerification.isVerifiedInquiryCondition()) return;
 
         DataRequest.inquiry();
     }
@@ -28,7 +28,7 @@ var ScreenEvent = {
 // 화면 검증
 var ScreenVerification = {
 
-    verifyInquiryCondition: function () {
+    isVerifiedInquiryCondition: function () {
 
         var OBJECT_EMAIL = $('[name="email"]');
         var OBJECT_START_YMD = $('[name="startYmd"]');

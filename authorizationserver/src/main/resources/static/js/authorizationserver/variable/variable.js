@@ -23,19 +23,19 @@ var ScreenEvent = {
 
     clickAdditionButton: function() {
 
-        Utility.grid.addRow("firstGrid");
+        Utility.grid.addRow("grid");
     },
 
     clickSavingButton: function() {
 
-        if (!ScreenVerification.verifySavingData()) return;
+        if (!ScreenVerification.isVerifiedSavingData()) return;
 
         DataRequest.save();
     },
 
     clickDeletingButton: function() {
 
-        if (!ScreenVerification.verifyDeletingData()) return;
+        if (!ScreenVerification.isVerifiedDeletingData()) return;
 
         DataRequest.delete();
     }
@@ -44,9 +44,9 @@ var ScreenEvent = {
 // 화면 검증
 var ScreenVerification = {
 
-    verifySavingData: function() {
+    isVerifiedSavingData: function() {
 
-        var gridIdentifier = "firstGrid";
+        var gridIdentifier = "grid";
         var list;
         var length;
 
@@ -70,9 +70,9 @@ var ScreenVerification = {
         return true;
     },
 
-    verifyDeletingData: function() {
+    isVerifiedDeletingData: function() {
 
-        return (!Utility.isEmptyArray(DataRequest.getDeletingKeys(), "선택된 데이터가 존재하지 않습니다. 삭제할 그리드 데이터를 선택해주세요."));
+        return (!Utility.isEmptyArray(DataRequest.getKeys(), "선택된 데이터가 존재하지 않습니다. 삭제할 그리드 데이터를 선택해주세요."));
     }
 };
 
@@ -81,18 +81,25 @@ var GridSetting = {
 
     initialize: function() {
 
-        var gridIdentifier = "firstGrid";
+        var identifier = "grid";
 
-        Utility.grid.initialize(gridIdentifier, {
-            columns: [ // 컬럼 목록 설정 // key. Data 바인딩시 Mapping 할 field 이름
-                {key: "key", label: "변수 이름", width: 174 , editor: {type: "text"}},
-                {key: "value", label: "변수 값", width: 210, editor: {type: "text"}},
-                {key: "detail", label: "변수 내용", width: 400, editor: {type: "text"}}
+        Utility.grid.initialize(identifier, {
+            colHeaders: [
+                '<i class="fa fa-check"></i>',
+                '<i class="fa fa-asterisk"></i> 변수 이름',
+                '<i class="fa fa-asterisk"></i> 변수 값',
+                '<i class="fa fa-asterisk"></i> 변수 내용'
             ],
-            page: {
-                onChange: function() {
+            columns: [
+                {data: "__selected__"},
+                {data: "key", width: 210},
+                {data: "value", width: 230},
+                {data: "detail", width: 360}
+            ],
+            pagination: {
+                onClick: function(pageOffset) {
 
-                    DataRequest.inquiry(this.page.selectPage);
+                    DataRequest.inquiry(pageOffset);
                 }
             }
         });

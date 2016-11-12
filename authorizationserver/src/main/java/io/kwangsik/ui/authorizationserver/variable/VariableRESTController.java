@@ -42,7 +42,7 @@ public class VariableRESTController {
     }
 
     /**
-     * 목록 저장
+     * 목록 저장하기
      * @param cause List<VariableDetail>
      * @return List<String>
      */
@@ -54,7 +54,7 @@ public class VariableRESTController {
     }
 
     /**
-     * 목록 삭제
+     * 목록 삭제하기
      * @param cause List<String>
      */
     @RequestMapping(value = "/system/variables", method = RequestMethod.DELETE)
