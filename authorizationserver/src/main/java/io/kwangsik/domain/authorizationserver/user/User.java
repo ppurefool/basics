@@ -3,6 +3,7 @@ package io.kwangsik.domain.authorizationserver.user;
 import io.kwangsik.domain.authorizationserver.userrole.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Entity // JPA Entity Class 인 경우 작성한다.
 @NoArgsConstructor // Constructor 추가시 작성한다.
+@DynamicUpdate // TODO
 public class User
         implements UserDetails { // Spring Security 를 이용하기 위하여 작성한다.
 
@@ -29,7 +31,7 @@ public class User
     private UserIdentifier identifier; // 사용자 Email
 
     @Column(name = "passwordHash", length = 128, nullable = false)
-    private String password; // 비밀번호 Hash
+    private String password; //  비밀번호 Hash
 
     @OneToMany(fetch = FetchType.EAGER) // Spring Security 을 이용하기 위하여 작성한다.
     @JoinColumn(name = "userEmail")
@@ -39,10 +41,18 @@ public class User
     @Getter
     private String name; // 이름
 
-    public User(final UserDetail cause) {
+    public User(final UserDetail cause, final String password) {
 
         this.identifier = new UserIdentifier(cause.getEmail());
-        this.password = "a6818b8188b36c44d17784c5551f63accc5deaf8786f9d0ad1ae3cd8d887cbab4f777286dbb315fb14854c8774dc0d10b5567e4a705536cc2a1d61ec0a16a7a6";
+        this.password = password;
+        this.name = cause.getName();
+    }
+
+    public User(final UserDetail cause, final User user) {
+
+        this.identifier = new UserIdentifier(cause.getEmail());
+        this.password = user.getPassword();
+        this.userRoles = (List<UserRole>) user.getAuthorities();
         this.name = cause.getName();
     }
 

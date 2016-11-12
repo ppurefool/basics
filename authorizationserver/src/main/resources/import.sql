@@ -48,3 +48,4 @@ insert into UserRole (userEmail, roleKey) values ('user2@kwangsik.io', 'BUSINESS
 
 insert into Variable (variableKey, variableValue, detailValue) values ('APPLICATION_TITLE', 'Kwangsik''s Authorization System', '화면내 <title> 태그에 사용되는 Text 예제) Kwangsik''s Basics System');
 insert into Variable (variableKey, variableValue, detailValue) values ('APPLICATION_LOGO_TEXT', '인증 시스템', '화면내 Logo 에 사용되는 Text 예제) 기본 시스템');
+insert into Variable (variableKey, variableValue, detailValue) values ('PASSWORD_DEFAULT_VALUE', 'a6818b8188b36c44d17784c5551f63accc5deaf8786f9d0ad1ae3cd8d887cbab4f777286dbb315fb14854c8774dc0d10b5567e4a705536cc2a1d61ec0a16a7a6', '사용자관리 화면에서 비밀번호 초기화시 설정되는 비밀번호 Hash 기본 값 예제) a6818b8188b36c44d17784c5551f63accc5deaf8786f9d0ad1ae3cd8d887cbab4f777286dbb315fb14854c8774dc0d10b5567e4a705536cc2a1d61ec0a16a7a6');

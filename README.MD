@@ -40,11 +40,9 @@ Role
 
 ### TODO
 
-formatter - period, email, number
+formatter - number
 
-로그인이력 조회조건 추가 - picker, 검증로직
-
-필수입력항목 표시
+    필수입력항목 표시
 
 로그인이 안된 경우 요청시 로그인팝업
 

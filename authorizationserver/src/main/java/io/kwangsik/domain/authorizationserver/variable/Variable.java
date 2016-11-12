@@ -16,10 +16,11 @@ public class Variable {
 
     @Id
     @Column(name = "variableKey", length = 50)
-    @Getter // VariableService 에서 이용한다.
+    @Getter // VariableService Class 에서 이용한다.
     private String key; // 변수 Key
 
     @Column(name = "variableValue", length = 200, nullable = false)
+    @Getter // UserService Class 에서 이용한다.
     private String value; // 변수 값
 
     @Column(name = "detailValue", length = 200, nullable = false)
