@@ -39,7 +39,7 @@
 
                     if (null != AFTER_CHANGE) AFTER_CHANGE(changes, source);
                     Utility.grid.handsontable.afterChange(changes, source, Utility.grid.self[identifier]);
-                }
+                };
 
                 configuration["afterOnCellMouseDown"] = function(event, coords, TD) {
 
@@ -50,21 +50,7 @@
 
             Utility.grid.self = {};
             Utility.grid.self[identifier] = new Handsontable(document.getElementById(identifier),
-                $.extend(true, {
-                    columnHeaderHeight: 30,
-                    columnSorting: true,
-                    data: [],
-                    fillHandle: {
-                        autoInsertRow: false,
-                        direction: "vertical"
-                    },
-                    fixedColumnsLeft: 1,
-                    multiSelect: false,
-                    outsideClickDeselects: false,
-                    sortIndicator: true,
-                    stretchH: "all",
-                    wordWrap: false
-                }, configuration));
+                $.extend(true, Utility.grid.handsontable.defaultConfiguration, configuration));
 
             Utility.grid.selectingKeys[identifier] = null;
 
@@ -143,7 +129,6 @@
         afterChange: function(changes, source, grid) {
 
             var length;
-            var grid;
 
             if (0 <= "autofill|edit|paste|".indexOf(source) && Utility.grid.handsontable.selectedColumnData != changes[0][1]) {
 
@@ -158,25 +143,52 @@
         },
         afterOnCellMouseDown: function(event, coords, TD, grid) {
 
-            var columnIndex = coords.col;
+            var COLUMN_INDEX = coords.col;
+            var ROW_INDEX;
+            var COUNT;
             var value;
-            var count;
             var data;
 
-            if (0 < columnIndex || 0 <= coords.row) return;
+            if (0 == COLUMN_INDEX) {
 
-            value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(columnIndex)));
-            count = grid.countSourceRows();
-            data = [];
+                COUNT = grid.countSourceRows();
 
-            for (var index = 0; index < count; index++) {
+                if (0 < COUNT) {
 
-                data[index] = [index, columnIndex, value];
+                    ROW_INDEX = coords.row;
+
+                    if (0 <= ROW_INDEX) {
+
+                        grid.setDataAtCell(ROW_INDEX, COLUMN_INDEX, !grid.getDataAtCell(ROW_INDEX, COLUMN_INDEX));
+                    } else {
+
+                        value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(COLUMN_INDEX)));
+                        data = [];
+
+                        for (var index = 0; index < COUNT; index++) {
+
+                            data[index] = [index, COLUMN_INDEX, value];
+                        }
+
+                        grid.setDataAtCell(data);
+                    }
+                }
             }
-
-            grid.setDataAtCell(data);
-
-            return false;
+        },
+        defaultConfiguration: {
+            columnHeaderHeight: 30,
+            columnSorting: true,
+            data: [],
+            fillHandle: {
+                autoInsertRow: false,
+                    direction: "vertical"
+            },
+            fixedColumnsLeft: 1,
+            multiSelect: false,
+            outsideClickDeselects: false,
+            sortIndicator: true,
+            stretchH: "all",
+            wordWrap: false
         },
         selectedColumnData: "__selected__"
     };

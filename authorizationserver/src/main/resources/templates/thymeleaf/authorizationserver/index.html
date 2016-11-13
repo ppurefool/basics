@@ -35,7 +35,7 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">사용자 E-mail</span>
-                                    <input class="form-control" type="email" name="email" placeholder="E-mail" maxlength="320" th:value="${#authentication.getName()}" th:disabled="${not #authentication.getPrincipal().hasAdministratorRole()}" />
+                                    <input class="form-control" type="email" name="email" placeholder="" maxlength="320" th:value="${#authentication.getName()}" th:disabled="${not #authentication.getPrincipal().hasAdministratorRole()}" />
                                 </div>
                             </div>
 
