@@ -95,21 +95,14 @@ var GridSetting = {
 
         Utility.grid.initialize(identifier, {
             colHeaders: [
-                '<i class="fa fa-check"></i>',
                 '<i class="fa fa-asterisk"></i> 사용자 E-mail',
                 '<i class="fa fa-asterisk"></i> 사용자 이름'
             ],
             columns: [
-                {data: "__selected__"},
                 {data: "email", width: 520},
                 {data: "name", width: 300}
             ],
-            pagination: {
-                onClick: function(pageOffset) {
-
-                    DataRequest.inquiry(pageOffset);
-                }
-            }
+            pagination: {onClick: function(pageOffset) {DataRequest.inquiry(pageOffset);}}
         });
     }
 };

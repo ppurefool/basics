@@ -1,6 +1,6 @@
 /**
  * Utility Grid - handsontable
- * 참고) handsontable.full.min.css, handsontable.full.min.js 등의 File 을 Include 해야한다.
+ * 참고) handsontable.full.min.css, handsontable.full.min.js, jQuery.min.js 등의 File 을 Include 해야한다.
  *
  * @author Kwangsik You
  */
@@ -19,63 +19,38 @@
         //     alert("utility.pagination.js 등의 File 이 누락되었습니다. 관리자에게 문의하십시오.");
         // } else {
         {
-            var PAGINATION_ON_CLICK = Utility.json.getValue(configuration, "pagination.onClick");
+            var HANDSONTABLE_SELECTING = Utility.json.coalesceValue(configuration, "handsontable.selecting", true);
+            var COL_HEADERS = "colHeaders";
             var COLUMNS = "columns";
-            var SELECTED_INDEX = $.inArray("__selected__",
-                $.map(Utility.json.getValue(configuration, COLUMNS), function(detail) {return detail["data"];}));
+            var AFTER_CHANGE;
+            var AFTER_ON_CELL_MOUSE_DOWN;
+            var PAGINATION_ON_CLICK = Utility.json.getValue(configuration, "pagination.onClick");
 
+            if (HANDSONTABLE_SELECTING) {
 
-            if (0 <= SELECTED_INDEX) {
+                configuration[COL_HEADERS] = ['<i class="fa fa-check"></i>'].concat(configuration[COL_HEADERS]);
+                configuration[COLUMNS] = [{data: Utility.grid.handsontable.selectedColumnData, width: 30, type: "checkbox", className: "htCenter"}]
+                    .concat(configuration[COLUMNS]);
 
-                configuration[COLUMNS][SELECTED_INDEX] = $.extend(true, configuration[COLUMNS][SELECTED_INDEX], {
-                    width: 30, type: "checkbox", className: "htCenter"
-                });
+                AFTER_CHANGE = configuration["afterChange"];
+                AFTER_ON_CELL_MOUSE_DOWN = configuration["afterOnCellMouseDown"];
 
                 configuration["afterChange"] = function(changes, source) {
 
-                    var SELECTED = "__selected__";
-                    var length;
-                    var grid;
+                    if (null != AFTER_CHANGE) AFTER_CHANGE(changes, source);
+                    Utility.grid.handsontable.afterChange(changes, source, Utility.grid.self[identifier]);
+                }
 
-                    if ("edit" != source && "autofill" != source) return;
-                    if (SELECTED == changes[0][1]) return;
+                configuration["afterOnCellMouseDown"] = function(event, coords, TD) {
 
-                    length = changes.length;
-                    grid = Utility.grid.self[identifier];
-                    for (var index = 0; index < length; index++) {
-
-                        if (changes[index][2] == changes[index][3]) return;
-                        grid.setDataAtRowProp(changes[index][0], SELECTED, true);
-                    }
-                };
-
-                configuration["afterOnCellMouseDown"] = function(event, coords) {
-
-                    var columnIndex = coords.col;
-                    var grid;
-                    var value;
-                    var count;
-                    var data;
-
-                    if ("__selected__" != configuration.columns[columnIndex]["data"] || 0 <= coords.row) return;
-
-                    grid = Utility.grid.self[identifier];
-                    value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(columnIndex)));
-                    count = grid.countSourceRows();
-                    data = [];
-                    for (var index = 0; index < count; index++) {
-
-                        data[index] = [index, columnIndex, value];
-                    }
-                    grid.setDataAtCell(data);
-
-                    return false;
+                    if (null != AFTER_ON_CELL_MOUSE_DOWN) AFTER_ON_CELL_MOUSE_DOWN(event, coords, TD);
+                    Utility.grid.handsontable.afterOnCellMouseDown(event, coords, TD, Utility.grid.self[identifier]);
                 };
             }
 
             Utility.grid.self = {};
             Utility.grid.self[identifier] = new Handsontable(document.getElementById(identifier),
-                $.extend(true, configuration, {
+                $.extend(true, {
                     columnHeaderHeight: 30,
                     columnSorting: true,
                     data: [],
@@ -89,7 +64,7 @@
                     sortIndicator: true,
                     stretchH: "all",
                     wordWrap: false
-                }));
+                }, configuration));
 
             Utility.grid.selectingKeys[identifier] = null;
 
@@ -130,7 +105,7 @@
         for (var index = 0; index < length; index++) {
 
             rowIndex = $.inArray(selectingKeys[index], keys);
-            if (0 <= rowIndex) grid.setDataAtRowProp(rowIndex, "__selected__", true);
+            if (0 <= rowIndex) grid.setDataAtRowProp(rowIndex, Utility.grid.self.selectedColumnData, true);
         }
 
         Utility.grid.clearSelectingKeyArray(identifier);
@@ -147,21 +122,62 @@
 
         var result = Utility.grid.self[identifier].getSourceData();
 
-        if (isSelected) {
-
-            result = $.grep(result, function(detail) {return detail.__selected__;});
-        }
+        if (isSelected) result = $.grep(result, function(detail) {return detail[Utility.grid.self.selectedColumnData];});
 
         return result;
     };
 
     Utility.grid.isSelected = function(identifier, index) {
 
-        return Utility.grid.self[identifier].getSourceDataAtRow(index)["__selected__"];
+        return Utility.grid.self[identifier].getSourceDataAtRow(index)[Utility.grid.self.selectedColumnData];
     };
 
     Utility.grid.getPageOffset = function(identifier) {
 
         return Utility.pagination.getPageOffset(identifier);
+    };
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    Utility.grid["handsontable"] = {
+        afterChange: function(changes, source, grid) {
+
+            var length;
+            var grid;
+
+            if (0 <= "autofill|edit|paste|".indexOf(source) && Utility.grid.handsontable.selectedColumnData != changes[0][1]) {
+
+                length = changes.length;
+
+                for (var index = 0; index < length; index++) {
+
+                    if (changes[index][2] == changes[index][3]) return;
+                    grid.setDataAtRowProp(changes[index][0], Utility.grid.handsontable.selectedColumnData, true, "utility-grid");
+                }
+            }
+        },
+        afterOnCellMouseDown: function(event, coords, TD, grid) {
+
+            var columnIndex = coords.col;
+            var value;
+            var count;
+            var data;
+
+            if (0 < columnIndex || 0 <= coords.row) return;
+
+            value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(columnIndex)));
+            count = grid.countSourceRows();
+            data = [];
+
+            for (var index = 0; index < count; index++) {
+
+                data[index] = [index, columnIndex, value];
+            }
+
+            grid.setDataAtCell(data);
+
+            return false;
+        },
+        selectedColumnData: "__selected__"
     };
 })();

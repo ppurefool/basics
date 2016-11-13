@@ -85,23 +85,16 @@ var GridSetting = {
 
         Utility.grid.initialize(identifier, {
             colHeaders: [
-                '<i class="fa fa-check"></i>',
                 '<i class="fa fa-asterisk"></i> 변수 이름',
                 '<i class="fa fa-asterisk"></i> 변수 값',
                 '<i class="fa fa-asterisk"></i> 변수 내용'
             ],
             columns: [
-                {data: "__selected__"},
                 {data: "key", width: 210},
                 {data: "value", width: 230},
                 {data: "detail", width: 360}
             ],
-            pagination: {
-                onClick: function(pageOffset) {
-
-                    DataRequest.inquiry(pageOffset);
-                }
-            }
+            pagination: {onClick: function(pageOffset) {DataRequest.inquiry(pageOffset);}}
         });
     }
 };

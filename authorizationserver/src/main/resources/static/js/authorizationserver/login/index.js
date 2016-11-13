@@ -87,13 +87,9 @@ var GridSetting = {
                 {data: "address", width: 200}
             ],
             disableVisualSelection: true,
+            handsontable: {selecting: false},
             readOnly: true,
-            pagination: {
-                onClick: function(pageOffset) {
-
-                    DataRequest.inquiry(pageOffset);
-                }
-            }
+            pagination: {onClick: function(pageOffset) {DataRequest.inquiry(pageOffset);}}
         });
     }
 };
