@@ -40,12 +40,6 @@ Role
 
 ### TODO
 
-Grid __selected__ Option 작성
-
-formatter - number
-
-필수입력항목 표시
-
 로그인이 안된 경우 요청시 로그인팝업
 
 Generator 작성 - temp Entity

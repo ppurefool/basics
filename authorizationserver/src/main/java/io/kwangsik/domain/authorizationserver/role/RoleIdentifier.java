@@ -1,6 +1,8 @@
 package io.kwangsik.domain.authorizationserver.role;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,7 +13,9 @@ import java.io.Serializable;
  * 참고) Identifier Class 는 Database Table 사이의 Non-Identifying Relationship 을 JPA Entity Class 사이에서도 Mapping 할 수 있게 해준다.
  */
 @Embeddable // Identifier Class 인 경우 작성한다.
+@NoArgsConstructor // Identifier Class 인 경우 작성한다.
 @Getter // Embedded Class 사용하기 위하여 작성한다.
+@AllArgsConstructor // Setter 를 대신하기 위하여 작성한다.
 public class RoleIdentifier
         implements Serializable { // Identifier Class 인 경우 Serializable Interface 를 Implementation 한다.
 
@@ -20,16 +24,16 @@ public class RoleIdentifier
     @Column(name = "roleKey", length = 50, nullable = false)
     private String key; // Role Key
 
-
     @Override // Identifier Class 인 경우 Serializable Interface 를 Implementation 한다.
     public boolean equals(final Object cause) {
 
-        return (this == cause || (null != cause && this.getClass() == cause.getClass() && this.key.equals(((RoleIdentifier) cause).key)));
+        return (this == cause || (null != cause && this.getClass() == cause.getClass()) &&
+                (null != this.key? this.key.equals(((RoleIdentifier) cause).key): null == ((RoleIdentifier) cause).key));
     }
 
     @Override // Identifier Class 인 경우 Serializable Interface 를 Implementation 한다.
     public int hashCode() {
 
-        return this.key.hashCode();
+        return (null != this.key? this.key.hashCode(): 0);
     }
 }

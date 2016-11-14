@@ -448,13 +448,13 @@
          * 예제) if (Utility.grid.hasNoData("grid", "선택된 데이터가 존재하지 않습니다. 저장할 그리드 데이터를 선택해주세요.", true)) return;
          *
          * @param identifier String
-         * @param messageIfTrue String
+         * @param message String
          * @param isSelected boolean 참고) null 인 경우 기본값으로 false 를 사용한다.
          * @returns {boolean}
          */
-        hasNoData: function(identifier, messageIfTrue, isSelected) {
+        hasNoData: function(identifier, message, isSelected) {
 
-            return Utility.isEmptyArray(Utility.grid.getData(identifier, isSelected), messageIfTrue);
+            return Utility.isEmptyArray(Utility.grid.getData(identifier, isSelected), message);
         },
 
         /**

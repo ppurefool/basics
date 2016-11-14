@@ -1,5 +1,5 @@
 /**
- * 변수 AJAX JS
+ * Role AJAX JS
  */
 "use strict";
 
@@ -22,7 +22,7 @@ var DataRequest = {
         Utility.grid.clear("grid");
 
         Utility.ajax.request({
-            url: "/system/variables", // 시스템 // 변수목록
+            url: "/system/roles", // 시스템 // Role목록
             type: "get", // 조회
             data: {
                 page: page,
@@ -35,7 +35,7 @@ var DataRequest = {
     save: function() {
 
         Utility.ajax.request({
-            url: "/system/variables", // 시스템 // 변수목록
+            url: "/system/roles", // 시스템 // Role목록
             type: "post", // 등록
             data: Utility.grid.getData("grid", true),
             success: DataResponse.processSavingSuccess
@@ -45,7 +45,7 @@ var DataRequest = {
     delete: function() {
 
         Utility.ajax.request({
-            url: "/system/variables", // 시스템 // 변수목록
+            url: "/system/roles", // 시스템 // Role목록
             type: "delete", // 삭제
             data: DataRequest.getKeys(),
             success: DataResponse.processDeletingSuccess

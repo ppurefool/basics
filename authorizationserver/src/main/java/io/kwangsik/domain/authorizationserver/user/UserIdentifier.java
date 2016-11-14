@@ -27,18 +27,13 @@ public class UserIdentifier
     @Override // Identifier Class 인 경우 Serializable Interface 를 Implementation 한다.
     public boolean equals(final Object cause) {
 
-        if (this == cause || (null != cause && this.getClass() == cause.getClass())) {
-            final UserIdentifier userIdentifier = (UserIdentifier) cause;
-
-            return (null != this.email? this.email.equals(userIdentifier.email): null == userIdentifier.email);
-        } else {
-            return false;
-        }
+        return (this == cause || (null != cause && this.getClass() == cause.getClass()) &&
+                (null != this.email? this.email.equals(((UserIdentifier) cause).email): null == ((UserIdentifier) cause).email));
     }
 
     @Override // Identifier Class 인 경우 Serializable Interface 를 Implementation 한다.
     public int hashCode() {
 
-        return (null != this.email? this.email.hashCode() : 0);
+        return (null != this.email? this.email.hashCode(): 0);
     }
 }

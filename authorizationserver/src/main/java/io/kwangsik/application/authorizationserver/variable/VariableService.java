@@ -7,6 +7,7 @@ import io.kwangsik.domain.authorizationserver.variable.VariableDetail;
 import io.kwangsik.domain.authorizationserver.variable.VariableListInquiryRepository;
 import io.kwangsik.domain.authorizationserver.variable.VariableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,9 +49,9 @@ public class VariableService {
         return result;
     }
 
-    @Transactional
     public void deleteList(final List<String> cause) {
 
-        cause.forEach(this.repository::delete);
+        cause.forEach(identifier -> {try {this.repository.delete(identifier);} catch
+                (EmptyResultDataAccessException e) {e.printStackTrace();}});
     }
 }

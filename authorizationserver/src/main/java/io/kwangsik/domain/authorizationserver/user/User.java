@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Entity // JPA Entity Class 인 경우 작성한다.
 @NoArgsConstructor // Constructor 추가시 작성한다.
-@DynamicUpdate // TODO
+@DynamicUpdate
 public class User
         implements UserDetails { // Spring Security 를 이용하기 위하여 작성한다.
 
@@ -45,7 +45,7 @@ public class User
 
         this.identifier = new UserIdentifier(cause.getUsername());
         this.password = password;
-        this.userRoles = (List<UserRole>) cause.getAuthorities();
+        this.userRoles = getUserRoles(cause);
         this.name = cause.getName();
     }
 
@@ -60,7 +60,7 @@ public class User
 
         this.identifier = new UserIdentifier(cause.getEmail());
         this.password = user.getPassword();
-        this.userRoles = (List<UserRole>) user.getAuthorities();
+        this.userRoles = getUserRoles(user);
         this.name = cause.getName();
     }
 
@@ -71,6 +71,12 @@ public class User
 
             return ("SYSTEM_ADMINISTRATOR".equals(authorityKey) || "BUSINESS_ADMINISTRATOR".equals(authorityKey));
         });
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    private List<UserRole> getUserRoles(final User user) {
+
+        return (List<UserRole>) user.getAuthorities();
     }
 
     @Override // Spring Security 를 이용하기 위하여 작성한다. // 참고) UserService Class 에서 이용한다.

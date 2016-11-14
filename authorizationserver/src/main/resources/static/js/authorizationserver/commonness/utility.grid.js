@@ -91,7 +91,7 @@
         for (var index = 0; index < length; index++) {
 
             rowIndex = $.inArray(selectingKeys[index], keys);
-            if (0 <= rowIndex) grid.setDataAtRowProp(rowIndex, Utility.grid.self.selectedColumnData, true);
+            if (0 <= rowIndex) grid.setDataAtRowProp(rowIndex, Utility.grid.handsontable.selectedColumnData, true);
         }
 
         Utility.grid.clearSelectingKeyArray(identifier);
@@ -108,14 +108,14 @@
 
         var result = Utility.grid.self[identifier].getSourceData();
 
-        if (isSelected) result = $.grep(result, function(detail) {return detail[Utility.grid.self.selectedColumnData];});
+        if (isSelected) result = $.grep(result, function(detail) {return detail[Utility.grid.handsontable.selectedColumnData];});
 
         return result;
     };
 
     Utility.grid.isSelected = function(identifier, index) {
 
-        return Utility.grid.self[identifier].getSourceDataAtRow(index)[Utility.grid.self.selectedColumnData];
+        return Utility.grid.self[identifier].getSourceDataAtRow(index)[Utility.grid.handsontable.selectedColumnData];
     };
 
     Utility.grid.getPageOffset = function(identifier) {

@@ -11,7 +11,7 @@ var DataRequest = {
         Utility.grid.clear("grid");
 
         Utility.ajax.request({
-            url: "/membership/login", // 회원 로그인 목록
+            url: "/membership/login", // 회원 // 로그인
             type: "get", // 조회
             data: Utility.json.serialize($("#condition"), {
                 page: page,
