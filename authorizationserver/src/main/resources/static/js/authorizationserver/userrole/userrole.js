@@ -8,7 +8,6 @@
 $(document).ready(function() {
 
     Utility.initialize();
-    Utility.setConditionChangeCallback("condition", ScreenEvent.clickInquiryButton);
     ScreenSetting.processReadyEvent();
     DataRequest.inquiryCombo(function() {$('#inquiryButton').click();});
 });
@@ -108,5 +107,7 @@ var ScreenSetting = {
         $('#inquiryButton').click(ScreenEvent.clickInquiryButton); // 조회 버튼
         $('#savingButton').click(ScreenEvent.clickSavingButton); // 저장 버튼
         $('#deletingButton').click(ScreenEvent.clickDeletingButton); // 삭제 버튼
+
+        Utility.setConditionChangeCallback("condition", ScreenEvent.clickInquiryButton);
     }
 };

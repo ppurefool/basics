@@ -102,5 +102,7 @@ var ScreenSetting = {
 
         // 이벤트 핸들러 설정
         $('#inquiryButton').click(ScreenEvent.clickInquiryButton); // 조회 버튼
+
+        Utility.setConditionChangeCallback("condition", ScreenEvent.clickInquiryButton);
     }
 };

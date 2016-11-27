@@ -61,7 +61,7 @@
 
     Utility.grid.clear = function(identifier) {
 
-        Utility.grid.self[identifier].loadData(null);
+        Utility.grid.self[identifier].loadData([]);
 
         Utility.pagination.clear(identifier);
     };
