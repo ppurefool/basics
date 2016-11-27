@@ -25,6 +25,7 @@ var DataRequest = {
             url: "/membership/users", // 회원 // 사용자목록
             type: "get", // 조회
             data: Utility.json.serialize($("#condition"), {
+                roleKey: null,
                 page: page,
                 size: 15
             }),

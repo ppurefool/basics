@@ -15,4 +15,5 @@ public class UserDetail {
 
     private String email; // Email
     private String name; // 이름
+    private boolean roleRegistrationYesorno; // Role 등록 여부
 }

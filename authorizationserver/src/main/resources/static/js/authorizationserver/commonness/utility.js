@@ -96,7 +96,7 @@
                 Utility.notification.self = new ax5.ui["toast"]({containerPosition: "top-right"});
             }
 
-            // Spring Security 의 Cross Site Request Forgery 방어 기능을 위해 작성한다.
+            // Spring Security 의 Cross Site `Reque`st Forgery 방어 기능을 위해 작성한다.
             if (verifyJQuery(true)) {
 
                 $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
@@ -104,6 +104,41 @@
                     jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="_csrf"]').attr("content")); // 참고) fragment.html
                 });
             }
+        },
+
+        /**
+         * 조건 Callback 설정
+         *
+         * 예제) Utility.setConditionCallback("condition", ScreenEvent.clickInquiryButton);
+         *
+         * @param parentIdentifier String
+         * @param callback Function
+         */
+        setConditionChangeCallback: function(parentIdentifier, callback) {
+
+            var PARENT = $("#" + parentIdentifier);
+
+            $.each(PARENT.find("input,select"), function(index, object) {
+
+                var TAG_NAME = object.tagName;
+
+                if ("SELECT" == TAG_NAME) {
+
+                    $(this).bind("change", callback);
+                } else if ("INPUT" == TAG_NAME) {
+
+                    if (0 <= "checkbox|radio".indexOf(object.type)) {
+
+                        $(this).click(callback);
+                    } else {
+
+                        $(this).keydown(function(event) {
+
+                            if (13 == event.keyCode) callback(event); // 13. Enter
+                        });
+                    }
+                }
+            });
         }
     };
 
@@ -557,6 +592,8 @@
          * @param identifier String
          * @returns {number}
          */
-        getPageOffset: $.noop
+        getPageOffset: $.noop,
+
+        getDataAtRow: $.noop
     };
 })();

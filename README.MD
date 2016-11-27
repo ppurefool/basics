@@ -22,8 +22,6 @@
 Role
 사용자 Role
 메뉴 Role
-부모코드
-자식코드
 변수
 
 ### resource server TODO

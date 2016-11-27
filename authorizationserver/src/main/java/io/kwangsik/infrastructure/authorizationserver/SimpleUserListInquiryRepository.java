@@ -7,7 +7,6 @@ import io.kwangsik.domain.authorizationserver.user.UserDetail;
 import io.kwangsik.domain.authorizationserver.user.UserListInquiryRepository;
 import org.adrianwalker.multilinestring.Multiline;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,17 +25,24 @@ public class SimpleUserListInquiryRepository implements UserListInquiryRepositor
     /**
 select
         new io.kwangsik.domain.authorizationserver.user.UserDetail(
-            a1.identifier.email,
-            a1.name)
+                a1.identifier.email,
+                a1.name,
+                exists (
+                    select  1
+                    from    UserRole ba
+                    where   ba.userIdentifier.email = a1.identifier.email
+                    and     ba.roleIdentifier.key   = :roleKey
+                )
+        )
 from
         User a1
 where   (
-        :email is null
-or      a1.identifier.email = :email
+                :email is null
+        or      a1.identifier.email = :email
         )
 and     (
-        :name is null
-or      a1.name like :name
+                :name is null
+        or      a1.name like :name
         )
 order by
         a1.identifier.email ASC*/
@@ -54,6 +60,7 @@ order by
 
         return this.entityManager.createQuery(queryString, UserDetail.class)
                 .setParameter("email", cause.getEmail())
-                .setParameter("name", cause.getName());
+                .setParameter("name", cause.getName())
+                .setParameter("roleKey", cause.getRoleKey());
     }
 }

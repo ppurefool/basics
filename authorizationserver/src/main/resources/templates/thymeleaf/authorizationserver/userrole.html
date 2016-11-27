@@ -5,8 +5,8 @@
 
     <th:block th:include="thymeleaf/authorizationserver/fragment :: head" />
 
-    <script th:src="@{../../js/authorizationserver/user/user.js}"></script><!-- 사용자 -->
-    <script th:src="@{../../js/authorizationserver/user/user-ajax.js}"></script><!-- 사용자 AJAX -->
+    <script th:src="@{../../js/authorizationserver/userrole/userrole.js}"></script><!-- 사용자 Role -->
+    <script th:src="@{../../js/authorizationserver/userrole/userrole-ajax.js}"></script><!-- 사용자 Role AJAX -->
 
 </head>
 
@@ -30,19 +30,16 @@
 
                         <!-- 조회 조건 -->
                         <div class="row" id="condition">
-                            <div class="col-lg-7">
+                            <div class="col-lg-5">
                                 <div class="input-group">
-                                    <span class="input-group-addon">사용자 E-mail</span>
-                                    <input class="form-control" type="email" name="email" placeholder="" />
+                                    <span class="input-group-addon">Role</span>
+                                    <span class="form-control" style="padding: 0;">
+                                        <select title="" name="roleKey"></select>
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon">사용자명</span>
-                                    <input class="form-control" type="text" name="name" placeholder="" />
-                                </div>
-                            </div>
+                            <div class="col-lg-6"></div>
 
                             <div class="col-lg-1 btn-inquiry">
                                 <button class="btn btn-default" type="button" id="inquiryButton">조회</button>
@@ -56,7 +53,7 @@
                         <div class="row" id="grid-pagination"><!-- id = (Grid Identifier) + "-pagination" -->
                             <div class="col-lg-12">
                                 <div class="pull-left">
-                                    <h5 style="text-indent: 5px;"><!-- Showing 1 to 10 of 57 entries --></h5>
+                                    <h5 style="text-indent: 5px"><!-- Showing 1 to 10 of 57 entries --></h5>
                                 </div>
                                 <div class="pull-right" style="height: 35px">
                                     <ul class="pagination pagination-sm" style="margin-top: 3px;">
@@ -77,12 +74,7 @@
                         <!-- 하단 Button -->
                         <br />
                         <div class="row">
-                            <div class="col-lg-6">
-                                <button class="btn btn-success" type="button" id="passwordInitializationButton">비밀번호 초기화</button>
-                            </div>
-
-                            <div class="col-lg-6" style="text-align: right;">
-                                <button class="btn btn-default" type="button" id="additionButton">추가</button>
+                            <div class="col-lg-12" style="text-align: right;">
                                 <button class="btn btn-success" type="button" id="savingButton">저장</button>
                                 <button class="btn btn-danger" type="button" id="deletingButton">삭제</button>
                             </div>

@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 사용자 목록 조회 요청
+ * 사용자 목록 조회 조건
  * 참고) UserListInquiryRepository Interface 에서 이용한다.
  */
 @ToString
@@ -14,6 +14,7 @@ public class UserListInquiryCondition {
 
     private String email; // Email
     private String name; // 이름
+    private String roleKey; // Role Key
 
     // 참고) SimpleUserListInquiryRepository Class 에서 이용한다.
     public String getEmail() {
@@ -25,5 +26,11 @@ public class UserListInquiryCondition {
     public String getName() {
 
         return BasicsUtility.getInstance().parseQueryParameter(this.name, "%");
+    }
+
+    // 참고) SimpleUserListInquiryRepository Class 에서 이용한다.
+    public String getRoleKey() {
+
+        return BasicsUtility.getInstance().parseQueryParameter(this.roleKey);
     }
 }

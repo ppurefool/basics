@@ -24,7 +24,6 @@
             var COLUMNS = "columns";
             var AFTER_CHANGE;
             var AFTER_ON_CELL_MOUSE_DOWN;
-            var PAGINATION_ON_CLICK = Utility.json.getValue(configuration, "pagination.onClick");
 
             if (HANDSONTABLE_SELECTING) {
 
@@ -38,31 +37,31 @@
                 configuration["afterChange"] = function(changes, source) {
 
                     if (null != AFTER_CHANGE) AFTER_CHANGE(changes, source);
-                    Utility.grid.handsontable.afterChange(changes, source, Utility.grid.self[identifier]);
+                    Utility.grid.handsontable.checkbox.afterChange(changes, source, identifier,
+                        Utility.grid.handsontable.checkbox.selectedColumnData);
                 };
 
                 configuration["afterOnCellMouseDown"] = function(event, coords, TD) {
 
                     if (null != AFTER_ON_CELL_MOUSE_DOWN) AFTER_ON_CELL_MOUSE_DOWN(event, coords, TD);
-                    Utility.grid.handsontable.afterOnCellMouseDown(event, coords, TD, Utility.grid.self[identifier]);
+                    Utility.grid.handsontable.checkbox.afterOnCellMouseDown(event, coords, TD,
+                        identifier, 0);
                 };
             }
 
-            Utility.grid.self = {};
+            if (null == Utility.grid.self) Utility.grid.self = {};
             Utility.grid.self[identifier] = new Handsontable(document.getElementById(identifier),
                 $.extend(true, Utility.grid.handsontable.defaultConfiguration, configuration));
 
             Utility.grid.selectingKeys[identifier] = null;
 
-            Utility.pagination.initialize(identifier, {
-                onClick: (null != PAGINATION_ON_CLICK? PAGINATION_ON_CLICK: null)
-            });
+            Utility.pagination.initialize(identifier, Utility.json.getValue(configuration, "pagination"));
         }
     };
 
     Utility.grid.clear = function(identifier) {
 
-        Utility.grid.self[identifier].loadData([]);
+        Utility.grid.self[identifier].loadData(null);
 
         Utility.pagination.clear(identifier);
     };
@@ -123,73 +122,85 @@
         return Utility.pagination.getPageOffset(identifier);
     };
 
+    Utility.grid.getDataAtRow = function(identifier, index) {
+
+        return Utility.grid.self[identifier].getSourceDataAtRow(index);
+    };
+
     // -----------------------------------------------------------------------------------------------------------------
 
     Utility.grid["handsontable"] = {
-        afterChange: function(changes, source, grid) {
+        checkbox: {
+            afterChange: function(changes, source, identifier, columnData) {
 
-            var length;
+                var GRID;
+                var length;
 
-            if (0 <= "autofill|edit|paste|".indexOf(source) && Utility.grid.handsontable.selectedColumnData != changes[0][1]) {
+                if (0 <= "autofill|edit|paste".indexOf(source) && columnData != changes[0][1]) {
 
-                length = changes.length;
+                    GRID = Utility.grid.self[identifier];
+                    length = changes.length;
 
-                for (var index = 0; index < length; index++) {
+                    for (var index = 0; index < length; index++) {
 
-                    if (changes[index][2] == changes[index][3]) return;
-                    grid.setDataAtRowProp(changes[index][0], Utility.grid.handsontable.selectedColumnData, true, "utility-grid");
-                }
-            }
-        },
-        afterOnCellMouseDown: function(event, coords, TD, grid) {
-
-            var COLUMN_INDEX = coords.col;
-            var ROW_INDEX;
-            var COUNT;
-            var value;
-            var data;
-
-            if (0 == COLUMN_INDEX) {
-
-                COUNT = grid.countSourceRows();
-
-                if (0 < COUNT) {
-
-                    ROW_INDEX = coords.row;
-
-                    if (0 <= ROW_INDEX) {
-
-                        grid.setDataAtCell(ROW_INDEX, COLUMN_INDEX, !grid.getDataAtCell(ROW_INDEX, COLUMN_INDEX));
-                    } else {
-
-                        value = !(0 <= $.inArray(true, grid.getSourceDataAtCol(COLUMN_INDEX)));
-                        data = [];
-
-                        for (var index = 0; index < COUNT; index++) {
-
-                            data[index] = [index, COLUMN_INDEX, value];
-                        }
-
-                        grid.setDataAtCell(data);
+                        if (changes[index][2] == changes[index][3]) return;
+                        GRID.setDataAtRowProp(changes[index][0], Utility.grid.handsontable.selectedColumnData, true, "utility-grid");
                     }
                 }
-            }
+            },
+            afterOnCellMouseDown: function(event, coords, TD, identifier, columnIndex) {
+
+                var COLUMN_INDEX = coords.col;
+                var ROW_INDEX;
+                var GRID;
+                var COUNT;
+                var value;
+                var data;
+
+                if (columnIndex == COLUMN_INDEX) {
+
+                    GRID = Utility.grid.self[identifier];
+                    COUNT = GRID.countSourceRows();
+
+                    if (0 < COUNT) {
+
+                        ROW_INDEX = coords.row;
+
+                        if (0 <= ROW_INDEX) {
+
+                            GRID.setDataAtCell(ROW_INDEX, COLUMN_INDEX, !GRID.getDataAtCell(ROW_INDEX, COLUMN_INDEX));
+                        } else {
+
+                            value = !(0 <= $.inArray(true, GRID.getSourceDataAtCol(COLUMN_INDEX)));
+                            data = [];
+
+                            for (var index = 0; index < COUNT; index++) {
+
+                                data[index] = [index, COLUMN_INDEX, value];
+                            }
+
+                            GRID.setDataAtCell(data);
+                        }
+                    }
+                }
+            },
+            selectedColumnData: "__selected__"
         },
         defaultConfiguration: {
             columnHeaderHeight: 30,
             columnSorting: true,
             data: [],
+            // disableVisualSelection: "area",
             fillHandle: {
                 autoInsertRow: false,
-                    direction: "vertical"
+                direction: "vertical"
             },
             fixedColumnsLeft: 1,
-            multiSelect: false,
+            // multiSelect: false,
             outsideClickDeselects: false,
             sortIndicator: true,
             stretchH: "all",
             wordWrap: false
-        },
-        selectedColumnData: "__selected__"
+        }
     };
 })();

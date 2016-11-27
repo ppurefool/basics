@@ -67,9 +67,7 @@ var GridSetting = {
 
     initialize: function() {
 
-        var gridIdentifier = "grid";
-
-        Utility.grid.initialize(gridIdentifier, {
+        Utility.grid.initialize("grid", {
             colHeaders: ['번호', "로그인 유형", "오류", "사용자 E-mail", "로그인/아웃 일시", "IP 주소"],
             columns: [
                 {data: "number", width: 40, className: "htRight"},

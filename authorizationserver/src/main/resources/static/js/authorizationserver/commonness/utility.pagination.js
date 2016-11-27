@@ -30,6 +30,7 @@
             Utility.pagination.self[identifier] = {
 
                 entries: $('#' + identifier + '-pagination>div>div.pull-left>h5'),
+                entriesText: "Showing {START} to {END} of {TOTAL_ELEMENTS} entries",
                 pages: $('#' + identifier + '-pagination>div>div.pull-right>ul>li'),
                 pageOnClick: function () {
 
@@ -63,9 +64,9 @@
                 }
             };
 
-            Utility.pagination.totalPage[identifier] = null;
-
+            if (null != configuration && null != configuration["entriesText"]) Utility.pagination.self[identifier].entriesText = configuration["entriesText"];
             Utility.pagination.self[identifier].pages.find('a').click(Utility.pagination.self[identifier].pageOnClick);
+            Utility.pagination.totalPage[identifier] = null;
         }
     },
 
@@ -143,7 +144,7 @@
         var START = PAGE * SIZE + 1;
         var END = (data["last"]? TOTAL_ELEMENTS: (PAGE + 1) * data["size"]);
 
-        Utility.pagination.self[identifier].entries.text("Showing " + START + " to " + END + " of " + TOTAL_ELEMENTS + " entries");
+        Utility.pagination.self[identifier].entries.text(Utility.pagination.self[identifier].entriesText.replace("{START}", START).replace("{END}", END).replace("{TOTAL_ELEMENTS}", TOTAL_ELEMENTS));
     },
 
     addRow: function(identifier) {

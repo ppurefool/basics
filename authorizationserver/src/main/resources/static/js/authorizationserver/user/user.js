@@ -91,9 +91,7 @@ var GridSetting = {
 
     initialize: function() {
 
-        var identifier = "grid";
-
-        Utility.grid.initialize(identifier, {
+        Utility.grid.initialize("grid", {
             colHeaders: [
                 '<i class="fa fa-asterisk"></i> 사용자 E-mail',
                 '<i class="fa fa-asterisk"></i> 사용자 이름'
