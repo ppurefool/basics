@@ -6,17 +6,6 @@
 // Data 요청
 var DataRequest = {
 
-    getKeys: function() {
-
-        return $.map(
-            $.grep(
-                Utility.grid.getData("grid", true),
-                function(detail) {return (!Utility.json.isEmptyValue(detail, "email"));}
-            ),
-            function(detail) {return detail.key}
-        );
-    },
-
     inquiryCombo: function(successCallback) {
 
         Utility.combo.request({

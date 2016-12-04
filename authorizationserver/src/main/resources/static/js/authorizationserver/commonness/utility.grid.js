@@ -107,7 +107,11 @@
 
         var result = Utility.grid.self[identifier].getSourceData();
 
-        if (isSelected) result = $.grep(result, function(detail) {return detail[Utility.grid.handsontable.selectedColumnData];});
+        if (isSelected) result = $.grep(result, function(detail, index) {
+
+            detail["__index__"] = index;
+            return detail[Utility.grid.handsontable.selectedColumnData];
+        });
 
         return result;
     };

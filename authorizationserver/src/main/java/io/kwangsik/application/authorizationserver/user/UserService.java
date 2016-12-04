@@ -11,7 +11,6 @@ import io.kwangsik.domain.authorizationserver.user.UserRepository;
 import io.kwangsik.domain.authorizationserver.variable.Variable;
 import io.kwangsik.domain.authorizationserver.variable.VariableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,9 +75,9 @@ public class UserService {
         return result;
     }
 
+    @Transactional
     public void deleteList(final List<String> cause) {
 
-        cause.forEach(identifier -> {try {this.repository.delete(new UserIdentifier(identifier));} catch
-                (EmptyResultDataAccessException e) {e.printStackTrace();}});
+        cause.forEach(identifier -> this.repository.delete(new UserIdentifier(identifier)));
     }
 }

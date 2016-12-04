@@ -92,6 +92,15 @@ var GridSetting = {
                 onClick: function(pageOffset) {DataRequest.inquiry(pageOffset);}
             }
         });
+    },
+
+    getData: function(identifier) {
+
+        return $.grep(Utility.grid.getData(identifier), function(detail, index) {
+
+            detail["__index__"] = index;
+            return detail["roleRegistrationYesorno"];
+        });
     }
 };
 

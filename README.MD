@@ -38,6 +38,8 @@ Role
 
 ### TODO
 
+EmptyResultDataAccessException -> 새로고침
+
 로그인이 안된 경우 요청시 로그인팝업
 
 Generator 작성 - temp Entity
